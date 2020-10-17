@@ -1,0 +1,9 @@
+<component name="ArtifactManager">
+  <artifact type="war" name="REProject:war2">
+    <output-path>$PROJECT_DIR$/out/artifacts/REProject_war2</output-path>
+    <root id="archive" name="REProject_war.war">
+      <element id="artifact" artifact-name="REProject:war exploded" />
+      <element id="dir-copy" path="$PROJECT_DIR$" />
+    </root>
+  </artifact>
+</component>

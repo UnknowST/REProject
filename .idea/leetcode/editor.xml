@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="LeetcodeEditor">
+    <option name="projectConfig">
+      <map>
+        <entry key="$PROJECT_DIR$/../../pythonProject/letcode/leetcode/editor/cn/[43]字符串相乘.java">
+          <value>
+            <LeetcodeEditor>
+              <option name="path" value="$PROJECT_DIR$/../../pythonProject/letcode/leetcode/editor/cn/[43]字符串相乘.java" />
+              <option name="questionId" value="43" />
+            </LeetcodeEditor>
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/../../pythonProject/letcode/leetcode/editor/cn/[44]通配符匹配.java">
+          <value>
+            <LeetcodeEditor>
+              <option name="path" value="$PROJECT_DIR$/../../pythonProject/letcode/leetcode/editor/cn/[44]通配符匹配.java" />
+              <option name="questionId" value="44" />
+            </LeetcodeEditor>
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+</project>
