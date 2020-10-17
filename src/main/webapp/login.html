@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>登陆系统</title>
+		<!--修改-->
+		<script src="Js/jquery-3.3.1.js"></script>
+		<script>
+			$(function () {
+				$("#but1").click(function () {
+					$.ajax({
+						url:'login/test1',
+						type:'post',
+						dataType:'json',
+						data:{userid:$("#userid").val(),password:$("#password").val(),shenfen:$("#group").val()},
+						async:false,
+						success:function (message) {
+
+							if(message.flag==1){
+								var shenfen=$("#group").val();
+								if(shenfen==1) window.location.href="Th_S.html";
+								if(shenfen==2) window.location.href="Th_W.html";
+								if(shenfen==3) window.location.href="Th_A.html";
+							}else alert(message.message);
+
+						}
+					})
+				})
+			})
+		</script>
+		<script>
+			function register(){
+				location.href="register.html";
+			}
+		</script>
+	<script>
+		function manage(){
+			location.href="manage.html";
+		}
+	</script>	
+	</head>
+	<body bgcolor="#6cf">
+		<p align="center" style="font-size:35px;font-weight:800;" href="manage.html">	上  海  海  洋  大  学  校  园  维  修  系  统
+</p>
+		<br />
+		<div style="width: 800px;height: 500px;background-color: black;margin:0 auto;margin-top: 20px;background-color: #6cf;" align="center">
+			<div style="float: left;width: 400px;height: 500px;">
+				<img src="img/logo.png" style="width: 400px;height: 400px;"/>
+			</div>
+			
+			<div style="float: left;width: 400px;height:400px;background-color: #6cf;">
+				<p style="font-size:30px;font-weight:800;">欢迎登录</p>
+				<p >
+					<label  style="font-size:25px;font-weight:400;">身份:</label> 
+					<select id="group" value="1"  style="background: darkgray;width: 150px;">
+					    <option value=""></option>
+						<!--此处有修改-->
+					    <option value="1">普通用户</option>
+						<option value="2">师傅</option>
+						<option value="3">管理员</option>
+						
+					</select>
+				</p>
+				
+				<p>
+					<label style="font-size:25px;font-weight:400;">账号:</label> <input type="text" id="userid" style="background: darkgray;"/>
+				</p>
+				
+				<p>
+					<label style="font-size:25px;font-weight:400;">密码:</label> <input type="password" id="password" style="background: darkgray;"/>
+				</p>
+				<button style="font-size:25px;font-weight:400;background: darkgray;" id="but1">登录系统</button>
+				&nbsp;&nbsp;&nbsp;&nbsp;<button style="font-size:25px;font-weight:400;background: darkgray;background: darkgray;" onclick="register()">前往注册</button>
+			</div>
+		</div>
+	</body>
+</html>

@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>修改个人信息</title>
+	<!--提交数据的代码-->
+	<script src="Js/jquery-3.3.1.js"></script>
+	<script src="Js/finduser.js"></script>
+	<script>
+		$(function () {
+			//读取原始数据
+			$("#name").val(getuser().name)
+			$("#phone").val(getuser().phone)
+			$("#mail").val(getuser().mail)
+			$("#collage").find('option[value='+getuser().collage+']').attr("selected",true);
+			$('input[value="'+getuser().gender+'"]').prop("checked",true);
+			/*会一直不停的提交ajax*/
+			$("#change").click(function () {
+
+				$.ajax({
+					url:'user/update',
+					type:'post',
+					data:{gender:$("#gender").val(),collage:$("#collage").val(),name:$("#name").val(),phone:$("#phone").val(),mail:$("#mail").val(),num:getuser().num},
+					dataType:'json',
+					async:false,
+					success:function (message) {
+						console.log(message);
+						alert(message.message);
+					}
+				})
+			})
+		})
+
+	</script>
+<style>
+	p{
+		text-align: center;
+	}
+
+    div{
+        text-align: center;
+    }
+
+</style>
+</head>
+<body>
+<div>
+			<form>
+				<!--此处value name 值有修改-->
+			<p >性别：男<input type="radio" id="gender" value="M">女<input type="radio" id="gender" value="W">
+  			</p>
+  			<p >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;学院：
+				<select name="collage" id="collage">
+					<option name="col" value ="0"></option>
+					<option name="col" value ="信息学院">信息学院</option>
+					<option name="col" value ="经管学院">经管学院</option>
+					<option name="col" value ="食品学院">食品学院</option>
+					<option name="col" value ="水产与生命学院">水产与生命学院</option>
+					<option name="col" value ="外国语学院">外国语学院</option>
+					<option name="col" value ="马克思主义学院">马克思主义学院</option>
+					<option name="col" value ="海洋科学学院">海洋科学学院</option>
+					<option name="col" value ="海洋生态与环境学院">海洋生态与环境学院</option>
+					<option name="col" value ="工程学院">工程学院</option>
+					<option name="col" value ="海洋文化与法律学院">海洋文化与法律学院</option>
+					<option name="col" value ="爱恩学院">爱恩学院</option>
+					<option name="col" value ="体育部">体育部</option>
+					<option name="col" value ="继续教育学院">继续教育学院</option>
+					<option name="col" value ="国际文化交流学院">国际文化交流学院</option>
+
+				</select>
+
+  			</p>
+			<p >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;姓名：
+					<input type="text" id="name">
+
+			</p>
+				<!--暂时不需要回宿舍号-->
+  		<!--	<p >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;宿舍：
+   			<input style="width:170px; height:20px" type="text" name="textfield2"  />
+  			</p>-->
+  			<p >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;邮箱：  
+   			<input style="width:170px; height:20px" type="text" name="textfield3"  id="mail"/>
+  			</p>
+  			<p >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;手机号：  
+   			<input style="width:170px; height:20px" type="text" name="textfield4"  id="phone"/>
+  			</p>
+  			<p >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    		<input style="width:70px; height:40px; font-family: 微软雅黑; font-size:20px;" name="change" type="submit" id="change" value="修改" />
+			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 
+			<input style="width:70px; height:40px; font-family: 微软雅黑; font-size:20px;" name="reset" type="submit" id="reset" value="重置" />
+			&nbsp;&nbsp;</p>
+  			</form>
+
+
+</div>
+</body>
+</html>
