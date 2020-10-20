@@ -3,6 +3,151 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
+    <script src="Js/jquery-3.3.1.js"></script>
+    <script src="Js/finduser.js"></script>
+    <link rel="stylesheet" type="text/css" href="css/popup.css" />  <!--//引入css-->
+    <script>
+        function getsum(workerid){
+            var sum=null;
+            //获取工人现在待维修的订单数
+            $.ajax({
+                url:'admin/suminfor',
+                type:'get',
+                data:{"workerid":workerid},
+                dataType:'json',
+                async:'false',
+                success:function (num) {
+                   sum=num;
+                }
+            })
+            return sum;
+        }
+        $(function () {
+            //获取工种数据
+            var typelist=getworkertype();
+            var summap=null;
+
+            var tou1='<select id="type">'
+            var wei1='</select>';
+            var d1=" ";
+            for(var i=0;i<typelist.length;i++){
+                d1+='<option value="'+typelist[i].num+'">'+typelist[i].type+'</option>'
+            }
+            $("#div3").html(tou1+d1+wei1);
+            //先获取typelist的第一个num值
+            var typenum=typelist[0].num;
+            var di='<option>'+typelist.type+'</option>'
+            //先获取所有的工人信息
+            $.ajax({
+                url:'admin/listworker',
+                type:'GET',
+                dataType:'json',
+                async:false,
+                success:function (workerlist) {
+
+                    var tou2='<select id="workerid">'
+                    var wei2='</select>';
+                    var d2=" ";
+                    //生成第一组数据
+                    for(var i=0;i<workerlist.length;i++){
+
+                        if(workerlist[i].type_worker==typenum){
+                            d2+='<option id="'+workerlist[i].num+'">'+workerlist[i].userid+'</option>'
+                        }
+                    }
+                    $("#div4").html(tou2+d2+wei2);
+
+                    $("#span1").html(getsum(workerlist[0].userid));
+
+                    //监听工种选择框的变化
+                    $("#type").change(function () {
+                        //获取值
+                        var typew=$("#type option:selected").val();
+                        alert(typew)
+
+                    })
+
+
+
+
+                }
+            })
+
+            //获取待维修的报修单信息
+            $.ajax({
+                url:'admin/daiinfor',
+                type:'get',
+                dataType: 'json',
+                async: false,
+                success:function (infor) {
+                    console.log(infor);
+                    var tou="<table id='tb1' cellspacing='0' border='1'>" +
+                        "<th>序号</th>" +
+                        "<th>用户账号</th>" +
+                        "<th>地点</th>" +
+                        "<th>设备</th>" +
+                        "<th>详细信息</th>" +
+                        "<th>图片</th>" +
+                        "<th>时间</th>" +
+                        "<th>操作</th>"
+                    var wei="</table>"
+                    var n=0;
+                    var l1=" ",l2=" ",l3=" ";
+                    for(var i=0;i<infor.length;i++){
+                        n++;
+                        l1='<tr><td>'+n+'</td>' +
+                            '<td>'+infor[i].userid+'</td>' +
+                            '<td>'+infor[i].place+'</td>' +
+                            '<td>'+infor[i].equip+'</td>' +
+                            '<td>'+infor[i].detail+'</td>'
+                        if(infor[i].imagepath!=null){
+                            l2='<td><img width="150px" height="90px" src="'+infor[i].imagepath+'" alt="诶呀！图片不小心走丢了....>"></td><td>'
+                                +infor[i].createdate+'</td><td><a href="javascript:void(0)" id="'+infor[i].num
+                                +'">选择工人</a></td></tr>'
+                        }else{
+                            l2='<td>该用户没有上传图片说明</td><td>'
+                                +infor[i].createdate+'</td><td><a href="javascript:void(0)" id="'+infor[i].num
+                                +'">选择工人</a></td></tr>'
+                        }
+                        l3+=l1+l2;
+                    }
+                    $("#div1").html(tou+l3+wei)
+
+                    var obj = document.getElementById("tb1").getElementsByTagName("a")
+
+                    for (var j = obj.length - 1; j >= 0; j--) {
+
+                        obj[j].onclick = function () {
+                            num = this.id;
+
+                            xianshi();
+
+
+                /*            $.ajax({
+                                url:"operation/Reinfor",
+                                type:"post",
+                                data:{"num":num,"statu":statu,"workerid":list[this.id].workerid,"userid":list[this.id].userid},
+                                dataType:"json",
+                                async: false,
+                                success:function (data) {
+                                    if(data.flag==0) alert(data.errorMsg);
+                                    else {
+                                        alert("回复成功!");
+                                        window.history.go(0)    //刷新页面
+                                    }
+
+                                }
+
+
+                            })*/
+                        }
+
+                    }
+                }
+            })
+
+        })
+    </script>
 <style>
     body{
         text-align: center;
@@ -11,5 +156,57 @@
 </head>
 <body>
 <h1>分配维修任务【涉及数据库内容，后期完善】</h1>
+<div id="div1"></div>
+
+<script>
+    function xianshi() {
+        document.getElementById('all_light').style.display = 'block';
+        document.getElementById('contes').style.display = 'block';
+    }
+    function close1()
+
+    {
+        document.getElementById('all_light').style.display = 'none';
+        document.getElementById('contes').style.display = 'none';
+    }
+</script>
+<div4 id="contes" style="">
+
+    <div5 style="width:500px;height:40px;">
+
+        <p align="centre">分配工人</p>
+        <hr>
+
+
+        <form id="fenpei" >
+            <table>
+                <tr>
+                    <td>选择工种</td>
+                    <td>
+                        <div id="div3"></div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>选择工人</td>
+                    <td>
+                        <div id="div4"></div>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="2">当前工人还有<span id="spn"></span>个待维维修的工单</td>
+                </tr>
+                <tr>
+                    <td><button id="btn1">确认分配</button></td>
+                    <td><button id="btn2" onclick="close1()">返回</button></td>
+                </tr>
+            </table>
+        </form>
+
+    </div5>
+
+</div4>
+<div6 id="all_light">
+</div6>
+
 </body>
 </html>

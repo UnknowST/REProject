@@ -33,9 +33,10 @@
                         for(var i=0;i<list.length;i++){
 
                             if(list[i].state=="待维修"){
+
                                 n++;
                                 li+='<tr><td>'+n+'</td><td>'+list[i].place+'</td><td>'+list[i].equip+'</td><td>'+list[i].createdate+'</td>' +
-                                    '<td><a >查看详情</a></td>' +
+                                    '<td><a href="infordetail.html?td=1&num='+list[i].num+'">查看详情</a></td>' +
                                     '</tr>'
                             }
                         }
@@ -49,7 +50,7 @@
                             if(list[i].state=="正在维修"){
                                 n++;
                                 l2+='<tr><td>'+n+'</td><td>'+list[i].place+'</td><td>'+list[i].equip+'</td><td>'+list[i].createdate+'</td>' +
-                                    '<td<a >查看详情</a>></td></tr>'
+                                    '<td><a href="infordetail.html?td=2&num='+list[i].num+'">查看详情</a></td></tr>'
                             }
                         }
                         $("div").find('table').remove();
@@ -63,7 +64,7 @@
                             if(list[i].state=="已维修"){
                                 n++;
                                 l3+='<tr><td>'+n+'</td><td>'+list[i].place+'</td><td>'+list[i].equip+'</td><td>'+list[i].createdate+'</td>' +
-                                    '<td><a >查看详情</a></td></tr>'
+                                    '<td><a href="infordetail.html?td=3&num='+list[i].num+'">查看详情</a></td></tr>'
                             }
                         }
                         $("div").find('table').remove();

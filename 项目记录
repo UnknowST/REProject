@@ -39,3 +39,64 @@ controller和html ajax的交互成功
 
  //    $("div").find('table').remove(); 删除div下的table
  //    $("table").find('tr').remove(); 删除table下的tr
+//    <a href="infordetail.html?num="'+list[i].num+'">修改信息</a>
+//mybatis多参数传递
+ <update id="modif_pass" >
+        update user set password=#{param2} where userid=#{param1}
+    </update>
+
+
+    <!--自动返回主键-->
+        <insert id="insertinfor" parameterType="infor"  >
+            insert into infor(place,equip,detail,userid,imagepath) values(#{place},#{equip},#{detail},#{userid},#{imagepath})
+            <selectKey keyProperty="num" resultType="int">
+                select LAST_INSERT_ID() as num
+            </selectKey>
+        </insert>
+
+        //获取单选按钮的值
+         var fenshu=$('input:radio[name="fenshu"]:checked').val();
+             <link rel="stylesheet" type="text/css" href="css/popup.css" />//引入css
+
+        mybatis 遇到未知的错误
+        //工人的功能 和用户修改基本信息的功能还没有实现
+
+        先实现管理员的功能吧
+
+
+        //重要注意点 在controller中出现空指针异常的原因
+        在controller中调用service的实现类是 要用自动注入
+
+        //查询某一个工人的待维修报修单数 还需要修改
+        //基本思路  根据账号直接去infor表中查找
+
+                //选出所有的超链接
+                 var obj = document.getElementById("div1").getElementsByTagName("a")
+
+                            for (var j = obj.length - 1; j >= 0; j--) {
+
+                                obj[j].onclick = function () {
+                                    num = list[this.id].cid;
+
+                                    var statu=$("#stu option:selected").text();   //有问题
+                                    alert(statu)
+                                        $.ajax({
+                                        url:"operation/Reinfor",
+                                        type:"post",
+                                        data:{"num":num,"statu":statu,"workerid":list[this.id].workerid,"userid":list[this.id].userid},
+                                        dataType:"json",
+                                        async: false,
+                                        success:function (data) {
+                                            if(data.flag==0) alert(data.errorMsg);
+                                            else {
+                                                alert("回复成功!");
+                                                window.history.go(0)    //刷新页面
+                                            }
+
+                                        }
+
+
+                                    })
+                                }
+
+                            }

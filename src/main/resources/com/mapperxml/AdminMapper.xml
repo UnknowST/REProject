@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mapper.Adminmapper">
+    <resultMap id="inforMap" type="infor">
+        <result column="inum" property="num"></result>
+        <result column="userid" property="userid"></result>
+        <result column="place" property="place"></result>
+        <result column="equip" property="equip"></result>
+        <result column="detail" property="detail"></result>
+        <result column="imagepath" property="imagepath"></result>
+        <result column="evaluate" property="evaluate"></result>
+        <result column="workerid" property="workerid"></result>
+        <result column="state" property="state"></result>
+        <result column="icreatedate" property="createdate"></result>
+        <collection property="replay" ofType="replay">
+            <result column="rnum" property="num"></result>
+            <result column="inforid" property="inforid"></result>
+            <result column="workerid" property="workerid"></result>
+            <result column="rdetail" property="detail"></result>
+            <result column="rcreatedate" property="createdate"></result>
+        </collection>
+    </resultMap>
+    <select id="listOf" resultMap="inforMap" >
+        SELECT *,i.num inum,r.num rnum ,i.createdate icreatedate,r.createdate rcreatedate,i.detail idetail,r.detail rdetail
+        FROM infor i,replay r WHERE  i.num=r.inforid
+    </select>
+
+    <select id="listworker" resultType="worker">
+        select * from worker
+    </select>
+
+    <select id="typeList" resultType="worker_type">
+        select * from type_worker
+    </select>
+
+    <select id="daiinfor" resultType="infor">
+        /*按时间升序查询*/
+       SELECT * FROM infor WHERE state="待维修" ORDER BY createdate ASC
+    </select>
+    <select id="suminfor" resultType="int">
+        SELECT  COUNT(infor.`workerid`)  SUM
+        FROM infor
+         WHERE state='待维修' AND infor.workerid="11111"
+         GROUP BY infor.`workerid`
+    </select>
+</mapper>

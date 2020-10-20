@@ -19,6 +19,8 @@
         <typeAlias type="com.daomain.Infor" alias="infor"/>
         <typeAlias type="com.daomain.Bill" alias="bill"/>
         <typeAlias type="com.daomain.Equipment" alias="equipment"/>
+        <typeAlias type="com.daomain.Worker_type" alias="worker_type"/>
     </typeAliases>
+
 
 </configuration>

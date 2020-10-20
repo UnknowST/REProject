@@ -4,14 +4,33 @@
 	<head>
 		<meta charset="utf-8">
 		<title>管理系统</title>
-		<script type="text/javascript">
-            function manage(){
-            location.href="manage.html";
-            }
-            function Th_A(){
-            location.href="Th_A.html";
-            }
-            </script>	
+		<!--修改-->
+		<script src="Js/jquery-3.3.1.js"></script>
+		<script>
+			$(function () {
+				$("#but1").click(function () {
+					$.ajax({
+						url:'login/test1',
+						type:'post',
+						dataType:'json',
+						data:{userid:$("#userid").val(),password:$("#password").val(),shenfen:3},
+						async:false,
+						success:function (message) {
+
+							if(message.flag==1){
+								 window.location.href="Th_A.html";
+							}else alert(message.message);
+
+						}
+					})
+				})
+
+				$("#but2").click(function () {
+					window.location.href="manage.html"
+				})
+			})
+		</script>
+
 	</head>
 	<body bgcolor="#6cf">
 		<p align="center" style="font-size:35px;font-weight:800;" href="manage.html">	上  海  海  洋  大  学  校  园  维  修  系  统
@@ -27,14 +46,14 @@
 				<br>
 				
 				<p>
-					<label style="font-size:25px;font-weight:400;">账号:</label> <input type="text" style="background: darkgray;"/>
+					<label style="font-size:25px;font-weight:400;">账号:</label> <input type="text" id="userid" style="background: darkgray;"/>
 				</p>
 				
 				<p>
-					<label style="font-size:25px;font-weight:400;">密码:</label> <input type="password" style="background: darkgray;"/>
+					<label style="font-size:25px;font-weight:400;">密码:</label> <input type="password" id="password" style="background: darkgray;"/>
 				</p>
-				<button style="font-size:25px;font-weight:400;background: darkgray;" onclick="Th_A()">登录系统</button>
-				&nbsp;&nbsp;&nbsp;&nbsp;<button style="font-size:25px;font-weight:400;background: darkgray;background: darkgray;" onclick="manage()">返回首页</button>
+				<button style="font-size:25px;font-weight:400;background: darkgray;"  id="but1">登录系统</button>
+				&nbsp;&nbsp;&nbsp;&nbsp;<button style="font-size:25px;font-weight:400;background: darkgray;background: darkgray;" id="but2">返回首页</button>
 			</div>
 		</div>
 	</body>

@@ -15,20 +15,6 @@ public class UserserviceImpl implements Userservice {
     private Usermapper usermapper;
 
     @Override
-    public List<User> findall() {
-
-        return usermapper.findall();
-
-    }
-
-
-
-    @Override
-    public List<User> selecti() {
-        return usermapper.selecti();
-    }
-
-    @Override
     public int insertinfor(Infor infor) {
         //事务控制
          int i=usermapper.insertinfor(infor);
@@ -48,6 +34,42 @@ public class UserserviceImpl implements Userservice {
 
        return  usermapper.updateuser(user);
 
+    }
+
+    @Override
+    public Infor infor_num(Integer num) {
+        return usermapper.infor_num(num);
+    }
+
+    @Override
+    public int delete_infor(Integer num) {
+        /*事务控制*/
+        int i=usermapper.delete_infor(num);
+        int j=usermapper.delete_replay(num);
+        System.out.println( "..."+i+";;;;"+j);
+        if(i==1&&j==1) return 1;
+        else
+        return 0;
+    }
+
+    @Override
+    public int update_infor(Infor infor) {
+        return usermapper.update_infor(infor);
+    }
+
+    @Override
+    public int modif_pass(String userid, String password) {
+        return usermapper.modif_pass(userid,password);
+    }
+
+
+
+    @Override
+    public int updateevl(String num, String fenshu,String workerid) {
+        int i=usermapper.updateevl(num,fenshu,workerid);
+        int j=usermapper.updatew_evl(workerid,fenshu);
+        if (i==1&&j==1) return 1;
+        else return 0;
     }
 
 }

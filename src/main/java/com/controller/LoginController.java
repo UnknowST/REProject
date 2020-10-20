@@ -9,17 +9,20 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
 @Controller
 @RequestMapping("/login")
 public class LoginController  {
     @Autowired
-    LoginService loginService=new LoginServiceImpl();
+    LoginService loginService;
     private Message message=new Message();
+    /*用户登录*/
     @RequestMapping("/test1")
     @ResponseBody
     public Message login(String userid,String password,String shenfen,HttpServletRequest request ,HttpServletResponse response) throws IOException {
@@ -62,7 +65,8 @@ public class LoginController  {
                 flag="登录成功";
                 message.setFlag(1);
                 Message.num=3;
-                request.getSession().setAttribute("user","admin");
+                request.getSession().setAttribute("name","admin");
+                request.getSession().setAttribute("password","12345");
             }else
             {
                 flag="密码或账号不正确";
@@ -73,19 +77,20 @@ public class LoginController  {
         message.setMessage(flag);
         return message;
     }
-
+    /*从seddion中返回普通用户数据*/
     @RequestMapping("/finduser")
     @ResponseBody
     public User test2(HttpServletRequest request){
            return  (User) request.getSession().getAttribute("user");
     }
+    /*从session中返回工人数据*/
     @RequestMapping("/findworker")
     @ResponseBody
     public Worker test3(HttpServletRequest request){
           return (Worker) request.getSession().getAttribute("user");
     }
 
-    
+    /*用户注册*/
     @RequestMapping("/insert")
     @ResponseBody
     public Message insert(String userid,String password,String num) {
@@ -131,8 +136,13 @@ public class LoginController  {
 
     }
 
-
-
+    /*清除session 并退出*/
+    @RequestMapping("/exit")
+    public String test4(HttpServletRequest request){
+        HttpSession session = request.getSession();
+        session.invalidate();
+        return   "redirect:/manage.html" ;
+    }
 
 
 }

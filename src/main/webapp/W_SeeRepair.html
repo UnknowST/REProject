@@ -3,6 +3,82 @@
 <head>
 <meta charset="UTF-8">
 <title>查看维修订单</title>
+    <script src="Js/jquery-3.3.1.js"></script>
+    <script src="Js/finduser.js"></script>
+    <script>
+        $(function () {
+            $.ajax({
+                uri:'worker/allinfor',
+                type:'get',
+                data:{"workerid":getworker().userid},
+                dataType:'json',
+                async:false,
+                success:function (infor) {
+                    alert("123");
+                    console.log(infor);
+                    console.log(list)
+                    var kai='<table id="td1" border="1" cellspacing="0">' +
+                        '<th>序号</th>' +
+                        '<th>地点</th>' +
+                        '<th>设备</th>' +
+                        '<th>时间</th>' +
+                        '<th>操作</th>'
+                    var jie='</table>'
+                    var li='' ,l2=' ',l3=' ';
+                    var n=0;
+                    $("#bu1").click(function () {
+                        li=' ';
+                        n=0;
+
+                        for(var i=0;i<list.length;i++){
+
+                            if(list[i].state=="待维修"){
+
+                                n++;
+                                li+='<tr><td>'+n+'</td><td>'+list[i].place+'</td><td>'+list[i].equip+'</td><td>'+list[i].createdate+'</td>' +
+                                    '<td><a href="infordetail.html?td=1&num='+list[i].num+'">查看详情</a></td>' +
+                                    '</tr>'
+                            }
+                        }
+                        $("div").find('table').remove();
+                        $("#div1").html(kai+li+jie);
+                    })
+                    $("#bu2").click(function () {
+                        l2=' ';
+                        n=0;
+                        for(var i=0;i<list.length;i++){
+                            if(list[i].state=="正在维修"){
+                                n++;
+                                l2+='<tr><td>'+n+'</td><td>'+list[i].place+'</td><td>'+list[i].equip+'</td><td>'+list[i].createdate+'</td>' +
+                                    '<td><a href="infordetail.html?td=2&num='+list[i].num+'">查看详情</a></td></tr>'
+                            }
+                        }
+                        $("div").find('table').remove();
+                        $("#div1").html(kai+l2+jie);
+
+                    })
+                    $("#bu3").click(function () {
+                        l3=' ';
+                        n=0;
+                        for(var i=0;i<list.length;i++){
+                            if(list[i].state=="已维修"){
+                                n++;
+                                l3+='<tr><td>'+n+'</td><td>'+list[i].place+'</td><td>'+list[i].equip+'</td><td>'+list[i].createdate+'</td>' +
+                                    '<td><a href="infordetail.html?td=3&num='+list[i].num+'">查看详情</a></td></tr>'
+                            }
+                        }
+                        $("div").find('table').remove();
+                        $("#div1").html(kai+l3+jie);
+
+                    })
+                }
+            })
+            $("#but1").click(function () {
+
+
+            })
+        })
+    </script>
 <style>
     body{
         text-align: center;
@@ -11,5 +87,10 @@
 </head>
 <body>
     <h1>查看维修订单</h1>
+   <p><button id="but1" value="待维修">待维修</button>
+    <button id="but2"> 正在维修</button>
+    <button id="but3">已完成</button></p>
+    <div id="div">
+    </div>
 </body>
 </html>

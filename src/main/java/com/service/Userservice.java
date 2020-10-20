@@ -7,14 +7,22 @@ import java.io.IOException;
 import java.util.List;
 
 public interface Userservice {
-    List<User> findall() ;
-
-    List<User> selecti();
     /*添加维修申报记录*/
     int  insertinfor(Infor infor);
     /*读取该用户所发布的维修记录*/
     List<Infor> findbyuserid(String userid);
     /*更新用户信息*/
     int updateuser(User user);
+    /*根据主键查找Infor记录*/
+    Infor infor_num(Integer num);
+    /*根据主键删除infor表单 */
+    int delete_infor(Integer num);
+    /*用户修改infor表*/
+    int update_infor(Infor infor);
+    /*修改用户密码*/
+    int modif_pass(String userid,String password);
+    /*用户评分修改Infor表*/
+    int updateevl(String num,String fenshu,String workerid);
+
 
 }

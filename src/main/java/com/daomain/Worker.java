@@ -8,10 +8,18 @@ import java.util.List;
 
 public class Worker {
     private Integer num;
-    private String userid,name,phone,gender,mail,password,position,workstate,sum_eval;
+    private String userid,name,phone,gender,mail,password,position,workstate,sum_eval,type_worker;
     @DateTimeFormat(pattern="yyyy-MM-dd HH:mm:ss")
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone="GMT+8")
     Date createdate;
+
+    public String getType_worker() {
+        return type_worker;
+    }
+
+    public void setType_worker(String type_worker) {
+        this.type_worker = type_worker;
+    }
 
     private List<Infor>  inforList;
 
