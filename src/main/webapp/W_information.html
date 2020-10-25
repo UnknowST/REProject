@@ -7,16 +7,29 @@
     <script src="Js/finduser.js"></script>
     <script>
         $(function () {
+            //先读出现在所拥有的工人种类
+            var typelist=getworkertype();
+
+            var tou1='<select id="type"> <option id="-1">---请选择---</option>'
+            var wei1='</select>';
+            var d1=" ";
+            for(var i=0;i<typelist.length;i++){
+                d1+='<option value="'+typelist[i].num+'">'+typelist[i].type+'</option>'
+            }
+            $("#div3").html(tou1+d1+wei1);
+
             $("#mail").val(getworker().mail);
             $("#phone").val(getworker().phone);
-            $("#type_worker").find('option[value='+getworker().type_worker+']').attr("selected",true);
+            $("#type").find('option[value='+getworker().type_worker+']').attr("selected",true);   //现在还不能选择 需要修改
             $('input[value="'+getworker().gender+'"]').prop("checked",true);
+
             $("#change1").click(function () {
+
                 /*出现栈空间循环调用的情况 暂时不会传递请求*/
                 $.ajax({
                     url:'worker/upinfor',
                     type:'post',
-                    data:{'type_worker':$("#type_worker").val(),'mail':$("#mail").val(),'phone':$("#phone").val(),'num':getworker().num,'gender':$("#gender").val()},
+                    data:{'type_worker':$("#type option:selected").val(),'mail':$("#mail").val(),'phone':$("#phone").val(),'num':getworker().num,'gender':$("#gender").val()},
                     dataType:'json',
                     async:false,
                     success:function (message) {
@@ -45,18 +58,11 @@
              性别：男<input type="radio" name="sex" id="gender" value="M">女<input type="radio" name="sex" id="gender" value="W">
          
           &nbsp;&nbsp;&nbsp;
-            工种：
-          <select  id="type_worker" >
-              <option value=" "></option>
-              <option value="电工">电工</option>
-              <option value="水工">水工</option>
-              <option value="木工">木工</option>
-              <option value="全能">全能</option>
-              <option value="其他">其他</option>             
-          </select>
-          </p>
-          
-          <p >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;邮箱：  
+            工种：</p>
+         <p> <div id="div3"></div></p>
+
+
+        <p >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;邮箱：
            <input style="width:200px; height:20px" type="text" id="mail" name="textfield3"  />
           </p>
           <p >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;手机号：  

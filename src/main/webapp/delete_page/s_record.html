@@ -4,9 +4,14 @@
 <meta charset="UTF-8">
 <title>查看维修记录</title>
     <!--修改-->
-    <script src="Js/jquery-3.3.1.js"></script>
-    <script src="Js/finduser.js"></script>
+    <script src="../Js/jquery-3.3.1.js"></script>
+    <script src="../Js/finduser.js"></script>
     <script>
+        $(function () {
+            $("#id1").attr('href','user/allinfor?userid='+getuser().userid+'&p=1')
+        })
+    </script>
+<!--    <script>
 
         /*先获取数据*/
         $(function () {
@@ -74,7 +79,7 @@
                 }
             })
         })
-    </script>
+    </script>-->
 <style>
     body{
         text-align: center;
@@ -85,12 +90,18 @@
 <h1>
 学生申报记录
     <!--修改-->
-    <p><button id="bu1">待维修</button>
+    <div id="div2" align="center">
+
+        <p><a id="id1">全部维修单</a>&nbsp;&nbsp;&nbsp;<a id="id2">待分配</a>&nbsp;&nbsp;&nbsp;
+            <a id="id3">待维修</a>&nbsp;&nbsp;&nbsp;<a id="id4">正在维修</a>&nbsp;&nbsp;&nbsp;<a id="id5">待评价</a></p>
+
+    </div>
+  <!--  <p><button id="bu1">待维修</button>
     <button id="bu2">正在维修</button>
     <button id="bu3">已完成</button></p>
     <div id="div1">
 
-    </div>
+    </div>-->
 </h1>
 </body>
 </html>

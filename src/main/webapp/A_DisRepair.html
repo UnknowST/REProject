@@ -17,6 +17,8 @@
                 dataType:'json',
                 async:'false',
                 success:function (num) {
+                   console.log(num)
+                    //数据成功拿到了
                    sum=num;
                 }
             })
@@ -25,9 +27,8 @@
         $(function () {
             //获取工种数据
             var typelist=getworkertype();
-            var summap=null;
 
-            var tou1='<select id="type">'
+            var tou1='<select id="type"> <option id="-1">---请选择---</option>'
             var wei1='</select>';
             var d1=" ";
             for(var i=0;i<typelist.length;i++){
@@ -45,7 +46,7 @@
                 async:false,
                 success:function (workerlist) {
 
-                    var tou2='<select id="workerid">'
+                    var tou2='<select id="workerid"><option id="-1">---请选择---</option>'
                     var wei2='</select>';
                     var d2=" ";
                     //生成第一组数据
@@ -56,14 +57,48 @@
                         }
                     }
                     $("#div4").html(tou2+d2+wei2);
+                    //创建第一组工人的 待维修订单情况
+                    if(getsum(workerlist[0].userid)==null||getsum(workerlist[0].userid)==null){
 
-                    $("#span1").html(getsum(workerlist[0].userid));
-
+                        $("#div5").html('<span>'+0+'</span>')
+                    }else {
+                        alert(getsum(workerlist[0].userid));
+                        $("#div5").html('<span>'+getsum(workerlist[0].userid)+'</span>')
+                    }
                     //监听工种选择框的变化
                     $("#type").change(function () {
                         //获取值
                         var typew=$("#type option:selected").val();
-                        alert(typew)
+                        //根据工种属性 获取到对应工种得工人账号
+
+                        var tou3='<select id="workerid"><option id="-1">---请选择---</option>'
+                        var wei3='</select>';
+
+                        var d3=" ";
+                        var n=0;
+                        for(var i=0;i<workerlist.length;i++){
+                            if(workerlist[i].type_worker==typew){
+                                n++;
+                                d3+='<option id="'+workerlist[i].num+'">'+workerlist[i].userid+'</option>'
+                            }
+                        }
+                        if(n==0) d3="<option id='-2'>暂无该类型得工人</option>"
+                        $("#workweid").find('select').remove();
+                        $("#workerid").html(tou3+d3+wei3);
+                        //监听eorkerid选择器
+                        $("#workerid").change(function () {
+                            //获取对应得workerid
+                            var id=$("#workerid option:selected").text();
+                            //获取到对应得待维修单数
+                            if(getsum(id)==null||getsum(id)==null){
+                            $("#div5").html('<span>'+0+'</span>')
+                            }else {
+                                $("#div5").html('<span>'+getsum(id)+'</span>')
+                            }
+
+
+
+                        })
 
                     })
 
@@ -119,27 +154,25 @@
 
                         obj[j].onclick = function () {
                             num = this.id;
-
                             xianshi();
-
-
-                /*            $.ajax({
-                                url:"operation/Reinfor",
-                                type:"post",
-                                data:{"num":num,"statu":statu,"workerid":list[this.id].workerid,"userid":list[this.id].userid},
-                                dataType:"json",
-                                async: false,
-                                success:function (data) {
-                                    if(data.flag==0) alert(data.errorMsg);
-                                    else {
-                                        alert("回复成功!");
-                                        window.history.go(0)    //刷新页面
+                            $("#btn1").click(function () {
+                                $.ajax({
+                                    url:"admin/uiworker",     //数据提交mybatis update没有更新成功
+                                    type:"post",
+                                    data:{"num":num,"workerid":$("#wokerid option:selected").val()},
+                                    dataType:"json",
+                                    async: false,
+                                    success:function (message) {
+                                        if(message.flag==1) {
+                                            alert(message.message);
+                                            window.history.go(0);
+                                        }else {
+                                            alert(message.message);
+                                        }
                                     }
+                                })
+                            })
 
-                                }
-
-
-                            })*/
                         }
 
                     }
@@ -193,7 +226,7 @@
                     </td>
                 </tr>
                 <tr>
-                    <td colspan="2">当前工人还有<span id="spn"></span>个待维维修的工单</td>
+                    <td colspan="2">当前工人还有<div id="div5"></div>个待维维修的工单</td>
                 </tr>
                 <tr>
                     <td><button id="btn1">确认分配</button></td>

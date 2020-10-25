@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.mapper.Usermapper">
-    <resultMap id="infor_Map" type="infor">
+    <resultMap id="inforMap" type="infor">
         <result column="inum" property="num"></result>
         <result column="userid" property="userid"></result>
         <result column="place" property="place"></result>
@@ -21,34 +21,20 @@
             <result column="rcreatedate" property="createdate"></result>
         </collection>
     </resultMap>
-    <select id="infor_num" resultMap="infor_Map" parameterType="int">
+
+    <select id="infor_num" resultMap="inforMap" parameterType="int">
         SELECT *,i.num inum,r.num rnum ,i.createdate icreatedate,r.createdate rcreatedate,i.detail idetail,r.detail rdetail
         FROM infor i,replay r WHERE i.num=#{num} AND i.num=r.inforid
 
     </select>
 
-    <update id="updateuser" parameterType="user">
-        update user
-        <set>
-            <if test="collage!=null">
-                collage=#{collage},
-            </if>
-            <if test="name!=null">
-                name=#{name},
-            </if>
-            <if test="phone!=null">
-                phone=#{phone},
-            </if>
-            <if test="gender!=null">
-                gender=#{gender},
-            </if>
-            <if test="mail!=null">
-                mail=#{mail}
-            </if>
-        </set>
-         where num=#{num}
+    <update id="updateuser" parameterType="user"  >
+        update user set collage=#{collage}, name=#{name},phone=#{phone},gender=#{gender}, mail=#{mail}  where num=#{num}
     </update>
-<!--自动返回主键-->
+    <select id="returnuser" resultType="user" >
+        select * from user where num=#{num}
+    </select>
+    <!--自动返回主键-->
     <insert id="insertinfor" parameterType="infor"  >
         insert into infor(place,equip,detail,userid,imagepath) values(#{place},#{equip},#{detail},#{userid},#{imagepath})
         <selectKey keyProperty="num" resultType="int">
@@ -60,34 +46,16 @@
         insert into replay(inforid) values (#{inforid})
     </insert>
 
-    <resultMap id="inforMap" type="infor">
-            <result column="inum" property="num"></result>
-            <result column="userid" property="userid"></result>
-            <result column="place" property="place"></result>
-            <result column="equip" property="equip"></result>
-            <result column="detail" property="detail"></result>
-            <result column="imagepath" property="imagepath"></result>
-            <result column="evaluate" property="evaluate"></result>
-            <result column="workerid" property="workerid"></result>
-            <result column="state" property="state"></result>
-            <result column="icreatedate" property="createdate"></result>
-            <collection property="replay" ofType="replay">
-                <result column="rnum" property="num"></result>
-                <result column="inforid" property="inforid"></result>
-                <result column="workerid" property="workerid"></result>
-                <result column="rdetail" property="detail"></result>
-                <result column="rcreatedate" property="createdate"></result>
-            </collection>
-    </resultMap>
     <select id="findbyuserid" resultMap="inforMap" parameterType="string">
-        SELECT *,i.num inum,r.num rnum ,i.createdate icreatedate,r.createdate rcreatedate,i.detail idetail,r.detail rdetail
-        FROM infor i,replay r WHERE i.userid=#{userid} AND i.num=r.inforid
+   SELECT *,i.num inum,r.num rnum ,i.createdate icreatedate,r.createdate rcreatedate,i.detail idetail,r.detail rdetail
+        FROM infor i,replay r WHERE i.userid=#{userid} AND i.num=r.inforid ORDER BY i.createdate DESC
 
     </select>
 
     <delete id="delete_infor" parameterType="int" >
         delete from infor where num=#{num}
     </delete>
+
     <delete id="delete_replay" parameterType="int">
         delete from replay where inforid=#{inforid}
     </delete>
@@ -112,17 +80,41 @@
     </update>
 
     <update id="modif_pass" >
-        update user set password=#{param2} where userid=#{param1}
+        update user set password=#{param2} where num=#{param1}
     </update>
 
     <update id="updateevl">
         update infor set evaluate=#{param2} where num=#{param1}
 
     </update>
+
     <update id="updatew_evl">
         update worker set  sum_eval=sum_eval+#{param2} where userid=#{param1}
     </update>
 
+    <select id="infor_dai" resultMap="inforMap" parameterType="string">
+   SELECT *,i.num inum,r.num rnum ,i.createdate icreatedate,r.createdate rcreatedate,i.detail idetail,r.detail rdetail
+        FROM infor i,replay r WHERE i.userid=#{userid} AND i.num=r.inforid and i.state="待分配" ORDER BY i.createdate DESC
+
+    </select>
+
+    <select id="infor_ing" resultMap="inforMap" parameterType="string">
+   SELECT *,i.num inum,r.num rnum ,i.createdate icreatedate,r.createdate rcreatedate,i.detail idetail,r.detail rdetail
+        FROM infor i,replay r WHERE i.userid=#{userid} AND i.num=r.inforid and i.state="正在维修" ORDER BY i.createdate DESC
+
+    </select>
+
+    <select id="infor_wait" resultMap="inforMap" parameterType="string">
+   SELECT *,i.num inum,r.num rnum ,i.createdate icreatedate,r.createdate rcreatedate,i.detail idetail,r.detail rdetail
+        FROM infor i,replay r WHERE i.userid=#{userid} AND i.num=r.inforid and i.state="待维修" ORDER BY i.createdate DESC
+
+    </select>
+
+    <select id="infor_eval" resultMap="inforMap" parameterType="string">
+   SELECT *,i.num inum,r.num rnum ,i.createdate icreatedate,r.createdate rcreatedate,i.detail idetail,r.detail rdetail
+        FROM infor i,replay r WHERE i.userid=#{userid} AND i.num=r.inforid and i.state="已维修" and i.evaluate=0 ORDER BY i.createdate DESC
+
+    </select>
 
 
 

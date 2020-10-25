@@ -30,9 +30,11 @@ public class UserserviceImpl implements Userservice {
     }
 
     @Override
-    public int updateuser(User user) {
+    public User updateuser(User user) {
 
-       return  usermapper.updateuser(user);
+      int i= usermapper.updateuser(user);
+      User user1=usermapper.returnuser(user.getNum());
+      return user1;
 
     }
 
@@ -58,8 +60,8 @@ public class UserserviceImpl implements Userservice {
     }
 
     @Override
-    public int modif_pass(String userid, String password) {
-        return usermapper.modif_pass(userid,password);
+    public int modif_pass(String num, String password) {
+        return usermapper.modif_pass(num,password);
     }
 
 
@@ -70,6 +72,28 @@ public class UserserviceImpl implements Userservice {
         int j=usermapper.updatew_evl(workerid,fenshu);
         if (i==1&&j==1) return 1;
         else return 0;
+    }
+
+    @Override
+    public List<Infor> infor_dai(String userid) {
+        return usermapper.infor_dai(userid);
+    }
+
+    @Override
+    public List<Infor> infor_ing(String userid) {
+
+        return usermapper.infor_ing(userid);
+    }
+
+    @Override
+    public List<Infor> infor_wait(String userid) {
+
+        return usermapper.infor_wait(userid);
+    }
+
+    @Override
+    public List<Infor> infor_eval(String userid) {
+        return usermapper.infor_eval(userid);
     }
 
 }

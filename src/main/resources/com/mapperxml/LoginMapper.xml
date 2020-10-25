@@ -4,6 +4,7 @@
     <select id="Userlogin" resultType="user" parameterType="user">
         select * from user where userid=#{userid} and password=#{password}
     </select>
+
     <select id="Workerlogin" resultType="worker" parameterType="worker">
         select  * from worker where userid=#{userid} and password=#{password}
     </select>
@@ -12,6 +13,7 @@
     <insert id="insertuser" parameterType="user">
         insert into user(userid,password) values(#{userid},#{password})
     </insert>
+
     <insert id="insertworker" parameterType="worker" >
         insert into worker(userid,password) values(#{userid},#{password})
     </insert>

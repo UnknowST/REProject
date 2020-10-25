@@ -1,5 +1,6 @@
 package com.service.impl;
 
+import com.daomain.Bill;
 import com.daomain.Infor;
 import com.daomain.Worker;
 import com.mapper.Workermapper;
@@ -38,5 +39,40 @@ public class WorkerserviceImpl implements Workerservice {
         }
        if(i==1) return 1;
        else return 0;
+    }
+
+    @Override
+    public List<Infor> infor_ing(String workerid) {
+        return workermapper.infor_ing(workerid);
+    }
+
+    @Override
+    public List<Infor> infor_ok(String workerid) {
+    return workermapper.infor_ok(workerid);
+    }
+
+    @Override
+    public int ok_infor(String num) {
+        return workermapper.ok_infor(num);
+    }
+
+    @Override
+    public int success_infor(String num) {
+    return workermapper.success_infor(num);
+    }
+
+    @Override
+    public String billnum() {
+    return workermapper.billnum();
+    }
+
+    @Override
+    public int insertbill(Bill bill) {
+    return workermapper.insertbill(bill);
+    }
+
+    @Override
+    public List<Bill> listbill(String workerid) {
+    return workermapper.listbill(workerid);
     }
 }

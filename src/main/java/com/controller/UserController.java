@@ -5,11 +5,14 @@ import com.daomain.Message;
 import com.daomain.User;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.service.Userservice;
 import com.service.impl.UserserviceImpl;
 
 
 import org.apache.commons.beanutils.BeanUtils;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -37,17 +40,13 @@ public class UserController  {
     private Message message=new Message();
     /*更新用户信息*/
     @RequestMapping("/update")
-    public Message saveuser(User user){
-         System.out.println(user);
-        int i=0;
-        try {
-            i= userservice.updateuser(user);
-        } catch (Exception e) {
-            i=-1;
-        }
-        if(i==1){
+    public Message saveuser( User user, HttpServletRequest request){
+        User user1=userservice.updateuser(user);
+        if(user!=null){
             message.setFlag(1);
             message.setMessage("修改成功！");
+            request.getSession().setAttribute("user",user1);
+
         }else{
             message.setFlag(0);
             message.setMessage("修改失败，请重试");
@@ -148,16 +147,143 @@ public class UserController  {
 
     /*
     * 查找指定用户id的维修记录*/
+    /*此时获取到的是所有的维修单*/
     @RequestMapping("/allinfor")
     @ResponseBody
-    public List<Infor> test6(String userid){
-        return userservice.findbyuserid(userid);
+    public ModelAndView test6(String userid,Integer p){
+        //设置分页相关参数   当前页+每页显示的条数
+        PageHelper.startPage(p,2);
+
+        ModelAndView modelAndView=new ModelAndView();
+        List<Infor> list=userservice.findbyuserid(userid);
+        if(list.size()==0) {
+            message.setFlag(0);
+            message.setMessage("您还当前没有相关的维修单");
+            modelAndView.addObject("userid",userid);
+            modelAndView.setViewName("s_record.jsp");
+            return modelAndView;
+        }else{
+            message.setFlag(1);
+            PageInfo<Infor> pageInfo = new PageInfo<Infor>(list);
+            modelAndView.addObject("inforlist",list);
+            modelAndView.addObject("page",pageInfo);
+            modelAndView.addObject("message" ,message);
+            modelAndView.addObject("userid",userid);
+            modelAndView.setViewName("s_record.jsp");
+        }
+        return modelAndView;
+
     }
     /*查找指定主键的infor记录*/
     @RequestMapping("/infor_num")
     @ResponseBody
-    public Infor test7(String num){
-        return userservice.infor_num(Integer.parseInt(num));
+    public ModelAndView test7(String num){
+        ModelAndView modelAndView=new ModelAndView();
+        modelAndView.addObject("infor",userservice.infor_num(Integer.parseInt(num)) );
+        modelAndView.setViewName("infordetail.jsp");
+        return modelAndView;
+    }
+    /*查询待分配的维修单*/
+    @RequestMapping("/infor_dai")
+    @ResponseBody
+    public ModelAndView test11(String userid,Integer p){
+        PageHelper.startPage(p,2);
+        ModelAndView modelAndView=new ModelAndView();
+        List<Infor> list=userservice.infor_dai(userid);
+        if(list.size()==0) {
+            message.setFlag(0);
+            message.setMessage("您还当前没有相关的维修单");
+            modelAndView.addObject("userid",userid);
+            modelAndView.setViewName("s_daiinfor.jsp");
+            return modelAndView;
+        }else{
+            message.setFlag(1);
+            PageInfo<Infor> pageInfo = new PageInfo<Infor>(list);
+            modelAndView.addObject("page",pageInfo);
+            modelAndView.addObject("inforlist",list);
+            modelAndView.addObject("message" ,message);
+            modelAndView.addObject("userid",userid);
+            modelAndView.setViewName("s_daiinfor.jsp");
+        }
+        return modelAndView;
+
+    }
+    /*查询用户正在维修的维修单*/
+    @RequestMapping("/infor_ing")
+    @ResponseBody
+    public ModelAndView test12(String userid,Integer p){
+        PageHelper.startPage(p,2);
+        ModelAndView modelAndView=new ModelAndView();
+        List<Infor> list=userservice.infor_ing(userid);
+        if(list.size()==0) {
+            message.setFlag(0);
+            message.setMessage("您还当前没有相关的维修单");
+            modelAndView.addObject("userid",userid);
+            modelAndView.setViewName("s_inginfor.jsp");
+            return modelAndView;
+        }else{
+            message.setFlag(1);
+            PageInfo<Infor> pageInfo = new PageInfo<Infor>(list);
+            modelAndView.addObject("page",pageInfo);
+            modelAndView.addObject("inforlist",list);
+            modelAndView.addObject("message" ,message);
+            modelAndView.addObject("userid",userid);
+            modelAndView.setViewName("s_inginfor.jsp");
+        }
+        return modelAndView;
+
+    }
+
+    /*查询用户待维修的维修单*/
+    @RequestMapping("/infor_wait")
+    @ResponseBody
+    public ModelAndView test13(String userid,Integer p){
+        PageHelper.startPage(p,2);
+        ModelAndView modelAndView=new ModelAndView();
+        List<Infor> list=userservice.infor_wait(userid);
+        if(list.size()==0) {
+            message.setFlag(0);
+            message.setMessage("您还当前没有相关的维修单");
+            modelAndView.addObject("userid",userid);
+            modelAndView.setViewName("s_waitinfor.jsp");
+            return modelAndView;
+        }else{
+            message.setFlag(1);
+            PageInfo<Infor> pageInfo = new PageInfo<Infor>(list);
+            modelAndView.addObject("page",pageInfo);
+            modelAndView.addObject("inforlist",list);
+            modelAndView.addObject("message" ,message);
+            modelAndView.addObject("userid",userid);
+            modelAndView.setViewName("s_waitinfor.jsp");
+        }
+        return modelAndView;
+
+    }
+
+    /*查询用户已完成维修的维修单 也就是待评分的维修单*/
+    @RequestMapping("/infor_eval")
+    @ResponseBody
+    public ModelAndView test14(String userid,Integer p){
+        PageHelper.startPage(p,2);
+        ModelAndView modelAndView=new ModelAndView();
+        List<Infor> list=userservice.infor_eval(userid);
+        if(list.size()==0) {
+            message.setFlag(0);
+            message.setMessage("您还当前没有相关的维修单");
+            modelAndView.addObject("userid",userid);
+            modelAndView.setViewName("s_evalinfor.jsp");
+            return modelAndView;
+        }else{
+            message.setFlag(1);
+            PageInfo<Infor> pageInfo = new PageInfo<Infor>(list);
+            modelAndView.addObject("page",pageInfo);
+            modelAndView.addObject("inforlist",list);
+            modelAndView.addObject("message" ,message);
+            modelAndView.addObject("userid",userid);
+            modelAndView.setViewName("s_evalinfor.jsp");
+        }
+        return modelAndView;
+
     }
     /*删除指定主键的Infor表单 并且一同删除相应的replay表单*/
     @RequestMapping("/delete_infor")
@@ -262,10 +388,10 @@ public class UserController  {
     /*修改用户密码*/
     @RequestMapping("modif_pass")
     @ResponseBody
-    public Message test10(String userid,String password){
+    public Message test10(String num,String password){
         int i=0;
         try {
-            i=userservice.modif_pass(userid,password);
+            i=userservice.modif_pass(num,password);
         } catch (Exception e) {
             i=-1;
         }

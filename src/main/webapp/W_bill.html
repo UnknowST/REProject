@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>bill</title>
+    <script src="Js/jquery-3.3.1.js"></script>
+    <script src="Js/finduser.js"></script>
+    <script>
+        $(function () {
+            //先获取到最后一个订单号
+            $.ajax({
+                url:'worker/bill_num',
+                type:'get',
+                dataType:'json',
+                async:false,
+                success:function (data) {
+
+                    $("#sp1").html(data+1);
+                    $("#btn2").click(function () {
+                        $.ajax({
+                            url:'worker/insertbill',
+                            data:{"num":data+1,"cost":$("#cost").val(),"place":$("#place").val(),"useing":$("#useing").val(),"workerid":getworker().userid},
+                            type: 'post',
+                            dataType: 'json',
+                            async:false,
+                            success:function (message){
+                                if(message.flag==1){
+                                    alert(message.message),
+                                        window.history.go(0);
+
+                                }else alert(message.message);
+                            }
+                        })
+                    })
+
+                }
+            })
+            //获取到用户填写的数据
+
+        })
+    </script>
+</head>
+<body>
+    <form >
+        <table align="center">
+            <tr>
+                <td>当前单号:</td>
+                <td><span id="sp1"></span></td>
+            </tr>
+            <tr>
+                <td>金额:</td>
+                <td><input type="number" id="cost"></td>
+            </tr>
+            <tr>
+                <td>地点:</td>
+                <td><input type="text" id="place"></td>
+            </tr>
+            <tr>
+                <td>用途:</td>
+                <td><input type="text" id="useing"></td>
+            </tr>
+            <tr>
+                <td align="center"><input type="reset" id="btn1" value="重填"></td>
+                <td align="center"><input type="button" id="btn2" value="提交"></td>
+            </tr>
+        </table>
+    </form>
+</body>
+</html>

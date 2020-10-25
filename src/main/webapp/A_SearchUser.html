@@ -3,6 +3,91 @@
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
+    <script src="Js/jquery-3.3.1.js"></script>
+    <script src="Js/pagesTest.js"></script>
+    <link rel="stylesheet" type="text/css" href="css/pages.css">
+    <script>
+        function deleteuser(num,p) {
+            $.ajax({
+                url:'admin/deleteuser',
+                data:{"num":num},
+                dataType:'json',
+                async:false,
+                success:function(message){
+                    if(message.flag==1){
+                        alert(message.message);
+                       window.history.go(0)
+
+                    }else {
+                        alert(message.message)
+                    }
+                }
+            })
+
+        }
+        function resetpass(num,p){
+            $.ajax({
+                url:'admin/resetpass',
+                data:{"num":num},
+                dataType:'json',
+                async:false,
+                success:function(message){
+                    if(message.flag==1){
+                        alert(message.message);
+
+
+                    }else {
+                        alert(message.message)
+                    }
+                }
+            })
+        }
+        $(function () {
+            $("#but1").click(function () {
+                var userid=$("#userid").val()
+                var collage=$("#collage").val()
+                var phone=$("#phone").val()
+                $.ajax({
+                    url:'admin/searchuser',
+                    type:'get',
+                    data:{"userid":userid,"collage":collage,"phone":phone},
+                    dataType:'json',
+                    async:false,
+                    success:function (list) {
+                      /*实现一个简单的分页功能*/
+                        var kai="<table cellspacing='0' border='1'><th>序号</th>" +
+                            "<th>账号</th>" +
+                            "<th>学院</th>" +
+                            "<th>姓名</th>" +
+                            "<th>电话</th>" +
+                            "<th>邮箱</th>" +
+                            "<th>性别</th>" +
+                            "<th>创建时间</th>" +
+                            "<th>操作</th>"
+                        var wei='</table>'
+                        var l1=" ",l2=" ",n=0;
+                        for(var i=0;i<list.length;i++){
+                            l1=" ";
+                            n++;
+                            l1+='<tr><td>'+n+'</td>' +
+                                '<td>'+list[i].userid+'</td>' +
+                                '<td>'+list[i].collage+'</td>' +
+                                '<td>'+list[i].name+'</td>' +
+                                '<td>'+list[i].phone+'</td>' +
+                                '<td>'+list[i].mail+'</td>' +
+                                '<td>'+list[i].gender+'</td>' +
+                                '<td>'+list[i].createdate+'</td>' +
+                                '<td><a href="javascript:void(0)" onclick="deleteuser('+list[i].num+')">删除</a>&nbsp;&nbsp;&nbsp;&nbsp;' +
+                                '<a href="javascript:void(0)" onclick="resetpass('+list[i].num+')">重置密码</a></td></tr>';
+                           // l2+=kai+l1+wei;
+                        }
+                        $("#pageMain").html(kai+l1+wei);
+
+                    }
+                })
+            })
+        })
+    </script>
 <style>
     body{
         text-align: center;
@@ -10,11 +95,22 @@
 </style>
 </head>
 <body>
-<h1>请输入搜索用户的ID号：</h1><br>
-<input type="search" id="userid" name="userid">
-<input type="submit" value="搜索"><br><br>
-<div>
-    *此div用于显示搜索内容
+
+账号:<input type="search" id="userid" name="userid">
+学院:<input type="search" id="collage" name="collage">
+电话:<input type="search" id="phone" name="phone">
+<input type="button" id="but1" value="搜索"><br><br>
+
+
+<div id="containet">
+    <ul id="pageMain">
+
+    </ul>
+    <div id="pageBox">
+        <span id="prev">上一页</span>
+        <ul id="pageNav"></ul>
+        <span id="next">下一页</span>
+    </div>
 </div>
 </body>
 </html>

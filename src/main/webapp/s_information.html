@@ -8,58 +8,6 @@
 	<script src="Js/finduser.js"></script>
 	<script>
 
-		function checkpassword1() {
-			var reg_password =  /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[^]{6,16}$/;
-
-			var password1=$("#password1").val();
-
-			var flag = reg_password.test(password1);
-			if(password1==null||password1=="") {$("#newpas1").html("请输入密码"); return false}
-			if(flag){
-				$("#newpas1").html("");
-				return true;}
-			else {
-				$("#newpas1").html("*密码格式有误,请输入至少6-16个字符，" + "<br>" + "至少1个大写字母，1个小写字母和1个数字，其他可以是任意字符;");
-				return false;
-			}
-
-		}
-		function checkpassword2(){
-			var password2=$("#password2").val();
-			var password1=$("#password1").val();
-			if(password2==null||password2=="")
-			{
-				$("#newpas2").html("请再次输入密码！"); return false;
-			}else
-			{
-				if(password2==password1){
-					$("#newpas2").html("");
-					return true}
-				else {
-					$("#newpas2").html("两次输入的密码不相同！")
-				}
-
-			}
-		}
-		function checkpass(){
-			var password=$("#password").val();
-
-			if(password==null||password=="")
-			{
-				$("#pas").html("请输入原密码"); return false;
-
-			}else
-			{
-				if(password!=getuser().password){
-				$("#pas").html("原密码错误"); return false;
-			}else{
-					$("#pas").html("");
-
-					return true
-				}
-
-			}
-		}
 
 		$(function () {
 			//读取原始数据
@@ -68,7 +16,6 @@
 			$("#mail").val(getuser().mail)
 			$("#collage").find('option[value='+getuser().collage+']').attr("selected",true);
 			$('input[value="'+getuser().gender+'"]').prop("checked",true);
-			/*会一直不停的提交ajax*/
 			$("#change").click(function () {
 				$.ajax({
 					url:'user/update',
@@ -77,48 +24,19 @@
 					dataType:'json',
 					async:false,
 					success:function (message) {
-						console.log(message);
-						alert(message.message);
+						if(message.flag==1){
+							alert(message.message);
+							window.history.go(0);
+						}else alert(message.message);
 					}
 				})
-			})
-			//修改密码按钮
-			$("#btn3").click(function () {
-				$("#for1").css("display","none");
-				$("#for2").css("display","block");
 
 			})
-			$("#btn2").click(function () {
-				$("#for1").css("display","block");
-				$("#for2").css("display","none");
 
-			})
+
+
 			
-			$("#btn1").click(function () {
-				if(checkpass()&&checkpassword1()&&checkpassword2()){
-					$.ajax({
-						url:'user/modif_pass',
-						type: 'post',
-						dataType: 'json',
-						data:{"userid":getuser().userid,"password":$("#password1").val()},
-						async: false,
-						success:function (message) {
-							if (message.flag==1) {
-								alert(message.message);
-								window.history.go(0)    //刷新页面
-							}else{
-								alert(message.message)
-							}
 
-						}
-					})
-				}
-				return false;
-			})
-
-			$("#password1").blur(checkpassword1);
-			$("#password2").blur(checkpassword2);
-			$("#password").blur(checkpass);
 		})
 
 	</script>
@@ -175,40 +93,15 @@
    			<input style="width:170px; height:20px" type="text" name="textfield4"  id="phone"/>
   			</p>
   			<p >&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-    		<input style="width:70px; height:40px; font-family: 微软雅黑; font-size:20px;" name="change" type="submit" id="change" value="修改" />
+    		<input style="width:70px; height:40px; font-family: 微软雅黑; font-size:20px;" name="change" type="submit" id="change"  value="修改" />
 			&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp
 			<input style="width:70px; height:40px; font-family: 微软雅黑; font-size:20px;" name="reset" type="submit" id="reset" value="重置" />
-			<input style="width:70px; height:40px; font-family: 微软雅黑; font-size:20px;" name="btn3" type="button" id="btn3" value="修改密码" />
+
 			 &nbsp;&nbsp;
 			</p>
   			</form>
 
-	<form id="for2" style="display: none">
-		<table>
-			<tr>
-				<td>请输入原密码</td>
-				<td><input type="password" id="password">
-				<span id="pas"></span>
-				</td>
-			</tr>
-			<tr>
-				<td>新密码:</td>
-				<td><input type="password" id="password1">
-					<span id="newpas1"></span>
-				</td>
-			</tr>
-			<tr>
-				<td>再次输入新密码:</td>
-				<td><input type="password" id="password2">
-					<span id="newpas2"></span>
-				</td>
-			</tr>
-			<tr>
-				<td><button id="btn1">确认修改</button></td>
-				<td><button id="btn2">返回</button></td>
-			</tr>
-		</table>
-	</form>
+
 
 
 </div>

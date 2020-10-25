@@ -37,7 +37,9 @@ http://www.springframework.org/schema/context/spring-context.xsd" >
         <!--加载mybatis核心文件-->
         <property name="configLocation" value="classpath:sqlMapConfig-spring.xml"></property>
         <property name="mapperLocations" value="classpath:com/mapperxml/*.xml"/>
+
     </bean>
+
 
     <!--扫描mapper所在的包 为mapper创建实现类-->
     <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">

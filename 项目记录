@@ -100,3 +100,47 @@ controller和html ajax的交互成功
                                 }
 
                             }
+
+
+                数据表 infor的状态分的不够细致 应该还添加一个字段为待师傅接单
+                 那么正在维修中的订单就应该是不能修改的
+                 用户只能再报修单还是待分配状态的时候才能修改
+                 关于工人查看报修的时候就比较注重待维修的
+
+                 //分配维修任务哪里还有  见面话不够友好 不能实时的显示出当前工人的待维修单数
+                    //html跳转后台 和访问后台的时候 不需要加/ 例如 admin/userlist admin前面不需要加/ 要是加了的话 就会自动省去项目的名称
+    //条件搜索语句
+        <select id="searchuser" parameterType="user" resultType="user">
+            select * from user
+            <where>
+                <if test="userid!=null and userid!=''">
+                    and userid=#{userid}
+                </if>
+                <if test="collage!=null and collage!= ''">
+                    and collage=#{collage}
+                </if>
+                <if test="phone!=null and phone!=''">
+                    and phone=#{phone}
+                </if>
+            </where>
+        </select>
+        //注意判断字符是否为空的方式 单冒号之间没有空格
+
+        //项目改进需要
+        。。分别查询对应状态的infor记录 然后分页显示
+
+        //维修流程
+        用户填写维修单  此时的状态就是待分配
+        管理员分配维修单之后 显示的是待维修
+        工人接到维修单之后 点击确认后显示的应该是正在维修
+        工人完成维修之后 维修状态显示为已完成维修
+
+    //判断中文的方式  单引号引上中文
+    <c:choose>
+       <c:when test="${infor.state == '待维修'}"></c:when>
+    </c:choose>
+
+    //表关联查询的时候 会出现死循环的结果 所以使用mybatis的懒加载模式 分步查询
+    //最后发现循环查询不是因为mybatis的原因 而是controller的原因 。。。。cao
+    //事实证明断点测试是个好东西
+    //为了防止查询的时候 在出现空的情况下 workerid就变为空 影响之后的查询 所以在后台生成一个单独的字段来保存id

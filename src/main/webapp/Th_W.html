@@ -171,6 +171,8 @@ if (page==6)  {
 			}
 		}
 		$(function () {
+			$("#fram1").attr("src",'worker/allinfor?workerid='+getworker().userid+'&p=1')
+			$("#fram4").attr("src",'worker/listbill?workerid='+getworker().userid+'&p=1')
 			$("#span1").text(getworker().userid);
 			$("#img1").click(function () {
 				if($("#div1").css("display")=='none') $("#div1").css("display","block");
@@ -311,17 +313,24 @@ if (page==6)  {
 
 <!-- 查看申报订单 -->
 <div id="page2" style="display:none;">
-<iframe src="W_SeeRepair.html" frameborder="0" leftmargin="0"></iframe>
+<iframe  frameborder="0" leftmargin="0" id="fram1"></iframe>
 </div>
-
+	<!--填写报销单-->
+	<div id="page3" style="display:none;">
+		<iframe src="W_bill.html" frameborder="0" leftmargin="0" id="fram2"></iframe>
+	</div>
+	<!--查看报销单-->
+	<div id="page4" style="display:none;">
+		<iframe src="W_bill.html" frameborder="0" leftmargin="0" id="fram4"></iframe>
+	</div>
 
 
 <!-- 功能对应的HTML网页 -->
 </td></tr>   <!-- 要添加功能，注意修改rowspan的值 -->
 
-<tr>  <td><a href="javascript:showpage(2)">查看申报订单</td></tr>
-<tr>  <td>更多功能，敬请期待...</td></tr>
-<tr>  <td></td></tr>
+	<tr>  <td><a href="javascript:showpage(2)">查看维修订单</a></td></tr>
+	<tr>  <td><a href="javascript:showpage(3)">填报报销单</a></td></tr>
+<tr>  <td><a href="javascript:showpage(4)">查看报销单</a></td></tr>
 <tr>  <td></td></tr>
 <tr>  <td></td></tr>
 <tr>  <td></td></tr>

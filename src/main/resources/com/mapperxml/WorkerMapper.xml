@@ -3,14 +3,17 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.mapper.Workermapper">
+
     <update id="updatewoker" parameterType="worker" >
         update worker set phone=#{phone} ,mail=#{mail},type_worker=#{type_worker},gender=#{gender} where num=#{num}
     </update>
+
     <select id="returnworker" resultType="worker" parameterType="string">
         select * from worker where num=#{num}
     </select>
+
     <resultMap id="inforMap" type="infor">
-        <result column="inum" property="num"></result>
+        <id column="inum" property="num"></id>
         <result column="userid" property="userid"></result>
         <result column="place" property="place"></result>
         <result column="equip" property="equip"></result>
@@ -20,21 +23,55 @@
         <result column="workerid" property="workerid"></result>
         <result column="state" property="state"></result>
         <result column="icreatedate" property="createdate"></result>
-        <collection property="replay" ofType="replay">
-            <result column="rnum" property="num"></result>
+        <association property="replay" javaType="replay" column="inum">
+            <id column="rnum" property="num"></id>
             <result column="inforid" property="inforid"></result>
             <result column="workerid" property="workerid"></result>
             <result column="rdetail" property="detail"></result>
             <result column="rcreatedate" property="createdate"></result>
-        </collection>
+        </association>
     </resultMap>
-    <select id="Listinfor" resultMap="inforMap" parameterType="string">
-          SELECT *,i.num inum,r.num rnum ,i.createdate icreatedate,r.createdate rcreatedate,i.detail idetail,r.detail rdetail
-        FROM infor i,replay r WHERE i.workerid=#{workerid} AND i.num=r.inforid
-    </select>
 
     <update id="modifpass" >
         update worker set password=#{param2} where num=#{param1}
 
     </update>
+
+    <select id="infor_ok" resultMap="inforMap" parameterType="string">
+              SELECT *,i.num inum,r.num rnum ,i.createdate icreatedate,r.createdate rcreatedate,i.detail idetail,r.detail rdetail
+        FROM infor i,replay r WHERE i.workerid=#{workerid} AND i.state="已维修" AND i.num=r.inforid  ORDER BY i.createdate DESC
+
+    </select>
+
+    <select id="Listinfor" resultMap="inforMap" parameterType="string">
+                  SELECT *,i.num inum,r.num rnum ,i.createdate icreatedate,r.createdate rcreatedate,i.detail idetail,r.detail rdetail
+        FROM infor i,replay r WHERE i.workerid=#{workerid}  AND i.state="待维修" AND i.num=r.inforid  ORDER BY i.createdate DESC
+
+    </select>
+
+    <select id="infor_ing" resultMap="inforMap" parameterType="string">
+             SELECT *,i.num inum,r.num rnum ,i.createdate icreatedate,r.createdate rcreatedate,i.detail idetail,r.detail rdetail
+        FROM infor i,replay r WHERE i.workerid=#{workerid} AND i.state="正在维修" AND i.num=r.inforid  ORDER BY i.createdate DESC
+
+    </select>
+
+    <update id="ok_infor" parameterType="string">
+        update infor set state="正在维修" where num=#{num}
+    </update>
+
+    <update id="success_infor" parameterType="string">
+        update infor set state="已维修" where num=#{num}
+    </update>
+
+    <select id="billnum" resultType="string">
+         SELECT MAX(num) FROM bill
+    </select>
+
+    <insert id="insertbill" parameterType="bill">
+        insert into bill(num,cost,place,useing,workerid) values (#{num},#{cost},#{place},#{useing},#{workerid})
+    </insert>
+
+    <select id="listbill" resultType="bill">
+        select * from bill where workerid=#{workerid} ORDER  BY createdate DESC
+    </select>
 </mapper>

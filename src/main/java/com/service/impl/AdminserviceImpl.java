@@ -1,6 +1,7 @@
 package com.service.impl;
 
 import com.daomain.Infor;
+import com.daomain.User;
 import com.daomain.Worker;
 import com.daomain.Worker_type;
 import com.mapper.Adminmapper;
@@ -38,5 +39,37 @@ public class AdminserviceImpl implements Adminservice {
     @Override
     public int suminfor(String workerid){
     return adminmapper.suminfor(workerid);
+    }
+
+    @Override
+    public int uiworker(String num, String workerid) {
+        int i=0;
+        try {
+            i=adminmapper.uiworker(num,workerid);
+        } catch (Exception e) {
+            i=-1;
+        }
+        if (i==1) return 1;
+        else return 0;
+    }
+
+    @Override
+    public List<User> userlist() {
+    return adminmapper.userlist();
+    }
+
+    @Override
+    public int deleteuser(String num) {
+    return adminmapper.deleteuser(num);
+    }
+
+    @Override
+    public int resetpassword(String num) {
+        return adminmapper.resetpassword(num);
+    }
+
+    @Override
+    public List<User> searchuser(User user ) {
+    return adminmapper.searchuser(user);
     }
 }

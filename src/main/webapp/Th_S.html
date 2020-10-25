@@ -5,14 +5,7 @@
 <title>学生界面</title>
 	<script src="Js/jquery-3.3.1.js"></script>
 	<script src="Js/finduser.js"></script>
-	<script >
-		var num;
-		var userid;
-		$(function () {
-			//获取用户账号
-			$("#div1").html(getuser().userid);
-		})
-	</script>
+
 <script type="text/javascript">
 function showpage(page){
 if (page==1)  {
@@ -126,6 +119,108 @@ if (page==6)  {
 </style>
 </head>
 <body>
+<link rel="stylesheet" type="text/css" href="css/popup.css" />  <!--//引入css-->
+<script>
+	function checkpassword1() {
+		var reg_password =  /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[^]{6,16}$/;
+
+		var password1=$("#password1").val();
+
+		var flag = reg_password.test(password1);
+		if(password1==null||password1=="") {$("#newpas1").html("请输入密码"); return false}
+		if(flag){
+			$("#newpas1").html("");
+			return true;}
+		else {
+			$("#newpas1").html("*密码格式有误,请输入至少6-16个字符，" + "<br>" + "至少1个大写字母，1个小写字母和1个数字，其他可以是任意字符;");
+			return false;
+		}
+
+	}
+	function checkpassword2(){
+		var password2=$("#password2").val();
+		var password1=$("#password1").val();
+		if(password2==null||password2=="")
+		{
+			$("#newpas2").html("请再次输入密码！"); return false;
+		}else
+		{
+			if(password2==password1){
+				$("#newpas2").html("");
+				return true}
+			else {
+				$("#newpas2").html("两次输入的密码不相同！")
+			}
+
+		}
+	}
+	function checkpass(){
+		var password=$("#password").val();
+
+		if(password==null||password=="")
+		{
+			$("#pas").html("请输入原密码"); return false;
+
+		}else
+		{
+			if(password!=getuser().password){
+				$("#pas").html("原密码错误"); return false;
+			}else{
+				$("#pas").html("");
+
+				return true
+			}
+
+		}
+	}
+	$(function () {
+		//获取用户账号
+		$("#div1").html(getuser().userid);
+		$("#iframe").attr("src",'user/allinfor?userid='+getuser().userid+'&p=1')
+
+		$("#img1").click(function () {
+
+			if($("#div2").css("display")=='none') $("#div2").css("display","block");
+			else $("#div2").css("display","none");
+
+
+		})
+		$("#modif_pas").click(function () {
+			document.getElementById('all_light').style.display = 'block';
+
+			document.getElementById('contes').style.display = 'block';
+
+		})
+
+		$("#btn1").click(function () {
+			if(checkpass()&&checkpassword1()&&checkpassword2()){
+				$.ajax({
+					url:'user/modif_pass',
+					type: 'post',
+					dataType: 'json',
+					data:{"num":getuser().num,"password":$("#password1").val()},
+					async: false,
+					success:function (message) {
+						if (message.flag==1) {
+							alert(message.message);
+							window.location.href="login/exit"
+						}else{
+							alert(message.message)
+						}
+
+					}
+				})
+			}
+			return false;
+		})
+
+		$("#password1").blur(checkpassword1);
+		$("#password2").blur(checkpassword2);
+		$("#password").blur(checkpass);
+
+
+	})
+</script>
 <table class="table1">
 	<tr cellspacing="10px">
 		<td>
@@ -144,7 +239,11 @@ if (page==6)  {
 			<table class="table2">
 				<tr><td rowspan=2>
 					<span style="float: left;margin-left: 100px;">
-						<img src="img/1.jpg" style="height: 100px;"/>
+						<img src="img/1.jpg" id="img1" style="height: 100px;"/>
+						<div id="div2" style="display: block">
+						<a id="modif_pas" onclick="javascript:void(0)">修改密码</a>
+						<a id="modif_tou" onclick="javascript:void(0)">修改头像</a>
+					</div>
 					</span>
 				</td><td colspan="2">学生端</td></tr>
 				<tr><td colspan="2">欢迎：<div id="div1"></div></td></tr>
@@ -152,7 +251,8 @@ if (page==6)  {
 			<!--此处的css未完成！-->
 		</td>
 	</tr>
-<tr>  <td><a href="javascript:showpage(1)">修改个人信息</a></td>  
+<tr>  <td><a href="javascript:showpage(1)">修改个人信息</a></td>
+
 <td class="td1" style="background-color:#6cf ;" colspan="6"  rowspan="12">
 <!-- 功能对应的HTML网页 -->
 
@@ -163,6 +263,56 @@ if (page==6)  {
 <iframe src="s_information.html" frameborder="0" leftmargin="0"  ></iframe>
 </div>
 
+	<script>
+
+		function close1()
+
+		{
+			document.getElementById('all_light').style.display = 'none';
+			document.getElementById('contes').style.display = 'none';
+		}
+	</script>
+	<div4 id="contes" style="">
+
+		<div5 style="width:500px;height:40px;">
+
+			<p align="centre">修改密码</p>
+			<hr>
+
+
+			<form id="modifpas" >
+				<table>
+					<tr>
+						<td>请输入原密码</td>
+						<td><input type="password" id="password">
+							<span id="pas"></span>
+						</td>
+					</tr>
+					<tr>
+						<td>新密码:</td>
+						<td><input type="password" id="password1">
+							<span id="newpas1"></span>
+						</td>
+					</tr>
+					<tr>
+						<td>再次输入新密码:</td>
+						<td><input type="password" id="password2">
+							<span id="newpas2"></span>
+						</td>
+					</tr>
+					<tr>
+						<td><button id="btn1">确认修改</button></td>
+						<td><button id="btn2" onclick="close1()">返回</button></td>
+					</tr>
+				</table>
+			</form>
+
+		</div5>
+
+	</div4>
+	<div6 id="all_light">
+	</div6>
+
 <!-- 发布报修申请 -->
 <div id="page2" style="display:none;">
 <iframe src="s_repair.html" frameborder="0" leftmargin="0"></iframe>
@@ -170,7 +320,8 @@ if (page==6)  {
 
 <!-- 查看维修记录 -->
 <div id="page3" style="display:none;">
-<iframe src="s_record.html" frameborder="0" leftmargin="0"></iframe>
+<iframe  frameborder="0" leftmargin="0" id="iframe">
+</iframe>
 </div>
 
 
