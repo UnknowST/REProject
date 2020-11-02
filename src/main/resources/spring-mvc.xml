@@ -28,5 +28,15 @@ http://www.springframework.org/schema/context/spring-context.xsd">
         <property name="maxInMemorySize" value="500000"/>
     </bean>
 
+    <!--拦截器映射-->
+    <mvc:interceptors>
+
+        <mvc:interceptor>
+            <mvc:mapping path="/**"/>
+            <bean class="com.Interceptor.LoginInterceptor"></bean>
+
+        </mvc:interceptor>
+    </mvc:interceptors>
+
 
 </beans>

@@ -3,6 +3,12 @@
 <head>
 <meta charset="UTF-8">
 <title>管理系统</title>
+	<script src="Js/jquery-3.3.1.js"></script>
+<!--	<script>
+		$(function () {
+			$("#ifram1").attr("src",'admin/daiinfor?p=1')
+		})
+	</script>-->
 <script type="text/javascript">
 function showpage(page){
 if (page==1)  {
@@ -150,12 +156,12 @@ if (page==6)  {
 
 <!-- 查看维修信息 -->
 <div id="page1" style="display:none;">
-<iframe src="A_SeeRepair.html" frameborder="0" leftmargin="0"></iframe>
+<iframe src="admin/daiinfor?p=1" frameborder="0" leftmargin="0" id="ifram1"></iframe>
 </div>
 
-<!-- 分配维修任务 -->
+<!-- 查看报销单 -->
 <div id="page2" style="display:none;">
-<iframe src="A_DisRepair.html" frameborder="0" leftmargin="0" ></iframe>
+<iframe src="admin/billlist?p=1" frameborder="0" leftmargin="0" ></iframe>
 </div>
 
 <!-- 查看用户信息 -->
@@ -163,14 +169,14 @@ if (page==6)  {
 <iframe src="admin/userlist?p=1"  frameborder="0" leftmargin="0" ></iframe>
 </div>
 
-<!-- 添加管理员 -->
+<!-- 查看工人信息 -->
 <div id="page4" style="display:none;">
-<iframe src="A_AddAdmin.html"    frameborder="0" leftmargin="0"></iframe>
+<iframe src="admin/listworkers?p=1" frameborder="0" leftmargin="0"></iframe>
 </div>
 
 <!-- 搜索用户 -->
 <div id="page5" style="display:none;">
-<iframe src="A_SearchUser.html"    frameborder="0" leftmargin="0" ></iframe>
+<iframe src="A_searchuser.jsp"    frameborder="0" leftmargin="0" ></iframe>
 </div>
 
 <!-- 添加用户 -->
@@ -182,9 +188,9 @@ if (page==6)  {
 <!-- 功能对应的HTML网页 -->
 </td></tr>   <!-- 要添加功能，注意修改rowspan的值 -->
 
-	<tr>  <td><a href="javascript:showpage(2)">分配维修任务</a></td></tr>
+	<tr>  <td><a href="javascript:showpage(2)">查看报销单</a></td></tr>
 	<tr>  <td><a href="javascript:showpage(3)">查看用户信息</a></td></tr>
-	<tr>  <td><a href="javascript:showpage(4)">添加管理员</a></td></tr>
+	<tr>  <td><a href="javascript:showpage(4)">查看工人信息</a></td></tr>
 	<tr>  <td><a href="javascript:showpage(5)">搜索用户</a></td></tr>
 	<tr>  <td><a href="javascript:showpage(6)">添加用户</a></td></tr>
 <tr>  <td>更多功能，敬请期待...</td></tr>

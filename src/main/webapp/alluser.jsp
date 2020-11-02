@@ -1,10 +1,4 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: 123
-  Date: 2020/10/21
-  Time: 21:26
-  To change this template use File | Settings | File Templates.
---%>
+
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <html>
@@ -77,8 +71,11 @@
                 <td>${user.gender }</td>
                 <td>${user.phone }</td>
                 <td>${user.mail }</td>
-                <td>${user.createdate }</td>
-                <td><a onclick="deleteuser(${user.num},${page.pageNum})" href="javascript:void(0)">删除账号</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a onclick="resetpass(${user.num},${page.pageNum})" href="javascript:void(0)}">重置密码</a></td>
+                <td> <fmt:formatDate type="both"
+                                     dateStyle="long" timeStyle="long"
+                                     value="${user.createdate}" /></td>
+                <td><a onclick="deleteuser(${user.num},${page.pageNum})" href="javascript:void(0)">删除账号</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    <a onclick="resetpass(${user.num},${page.pageNum})" href="javascript:void(0)">重置密码</a></td>
             </tr>
         </c:forEach>
         </tbody>
@@ -86,10 +83,20 @@
 
     <p>一共${page.pages}页;当前为${page.pageNum}页;每页${page.pageSize}条数据</p>
 
-    <a href="${pageContext.request.contextPath}/admin/userlist?p=${page.firstPage}">第一页</a> <a
-        href="${pageContext.request.contextPath}/admin/userlist?p=${page.nextPage}">下一页</a> <a
-        href="${pageContext.request.contextPath}/admin/userlist?p=${page.prePage}">上一页</a> <a
-        href="${pageContext.request.contextPath}/admin/userlist?p=${page.lastPage}">最后页</a>
+    <a href="${pageContext.request.contextPath}/admin/userlist?p=${page.firstPage}">第一页</a>
+    <c:if test="${page.nextPage==0}">
+        <a href="javascript:void(0)">下一页</a>
+    </c:if>
+    <c:if test="${page.nextPage!=0}">
+        <a href="${pageContext.request.contextPath}/admin/userlist?p=${page.nextPage}">下一页</a>
+    </c:if>
+    <c:if test="${page.prePage==0}">
+        <a href="javascript:void(0)">上一页</a>
+    </c:if>
+    <c:if test="${page.prePage!=0}">
+        <a href="${pageContext.request.contextPath}/admin/userlist?p=${page.prePage}">上一页</a>
+    </c:if>
+    <a href="${pageContext.request.contextPath}/admin/userlist?p=${page.lastPage}">最后页</a>
 </div>
 </body>
 </html>

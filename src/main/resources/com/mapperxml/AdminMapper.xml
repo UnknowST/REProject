@@ -37,10 +37,27 @@
         select * from type_worker
     </select>
 
-    <select id="daiinfor" resultType="infor">
+    <select id="daiinfor" resultMap="inforMap">
         /*按时间升序查询*/
-       SELECT * FROM infor WHERE state="待分配" ORDER BY createdate ASC
+                  SELECT *,i.num inum,r.num rnum ,i.createdate icreatedate,r.createdate rcreatedate,i.detail idetail,r.detail rdetail
+        FROM infor i,replay r WHERE i.state="待分配" and i.num=r.inforid ORDER BY i.createdate ASC
     </select>
+
+    <select id="waitinfor" resultMap="inforMap">
+                SELECT *,i.num inum,r.num rnum ,i.createdate icreatedate,r.createdate rcreatedate,i.detail idetail,r.detail rdetail
+        FROM infor i,replay r WHERE i.state="待维修" and i.num=r.inforid ORDER BY i.createdate ASC
+    </select>
+
+    <select id="inginfor" resultMap="inforMap">
+                SELECT *,i.num inum,r.num rnum ,i.createdate icreatedate,r.createdate rcreatedate,i.detail idetail,r.detail rdetail
+        FROM infor i,replay r WHERE i.state="正在维修" and i.num=r.inforid ORDER BY i.createdate ASC
+    </select>
+
+    <select id="succinfor" resultMap="inforMap">
+                SELECT *,i.num inum,r.num rnum ,i.createdate icreatedate,r.createdate rcreatedate,i.detail idetail,r.detail rdetail
+        FROM infor i,replay r WHERE i.state="已维修" and i.num=r.inforid ORDER BY i.createdate ASC
+    </select>
+
 
     <select id="suminfor" resultType="int" parameterType="string">
       SELECT COUNT(workerid) FROM infor WHERE workerid=#{workerid} AND state="待维修"
@@ -73,6 +90,69 @@
             </if>
             <if test="phone!=null and phone!=''">
                 and phone=#{phone}
+            </if>
+        </where>
+    </select>
+
+    <select id="billlist" resultType="bill" >
+        select * from bill
+    </select>
+    <delete id="deletebill" parameterType="string">
+        delete from bill where snum=#{snum}
+    </delete>
+    <update id="updatebill" parameterType="bill">
+        update bill set place=#{place} ,useing=#{useing} , cost=#{cost} where snum=#{snum}
+    </update>
+    <insert id="InsertUser" parameterType="user">
+        insert into user(userid,password) values(#{userid},#{password});
+    </insert>
+    <insert id="InsertWorker" parameterType="worker">
+        insert into worker(userid,password) values(#{userid},#{password});
+    </insert>
+
+    <delete id="deleteworker" parameterType="string">
+        delete from worker where num=#{num}
+    </delete>
+    <update id="resetworker" parameterType="string">
+        update worker set password="111111" where num=#{num}
+    </update>
+    <update id="updateworker" parameterType="worker">
+        update worker set type_worker=#{type_worker} ,position=#{position},workstate=#{workstate}
+        where num=#{num};
+    </update>
+
+    <select id="searchworkers" parameterType="worker" resultType="worker">
+        select * from worker
+        <where>
+            <if test="userid!=null and userid!=''">
+                and userid=#{userid}
+            </if>
+            <if test="position!=null and position!= ''">
+                and positione=#{position}
+            </if>
+            <if test="type_worker!=null and type_worker!=''">
+                and type_worker=#{type_worker}
+            </if>
+            <if test="workstate!=null and workstate!=''">
+                and workstate=#{workstate}
+            </if>
+        </where>
+    </select>
+
+    <select id="searchbill" parameterType="bill" resultType="bill">
+        select * from bill
+        <where>
+            <if test="num!=null and num!=''">
+                and num=#{num}
+            </if>
+            <if test="workerid!=null and workerid!= ''">
+                and workerid=#{workerid}
+            </if>
+            <if test="place!=null and place!=''">
+                and place like '%${place}%'
+            </if>
+            <if test="useing!=null and useing!=''">
+                and useing like '%${useing}%'
             </if>
         </where>
     </select>

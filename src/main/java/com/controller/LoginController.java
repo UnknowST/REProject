@@ -25,8 +25,21 @@ public class LoginController  {
     /*用户登录*/
     @RequestMapping("/test1")
     @ResponseBody
-    public Message login(String userid,String password,String shenfen,HttpServletRequest request ,HttpServletResponse response) throws IOException {
+    public Message login(String code,String userid,String password,String shenfen,HttpServletRequest request ,HttpServletResponse response) throws IOException {
 
+
+        //从sesion中获取验证码
+        HttpSession session = request.getSession();
+        String checkcode_server = (String) session.getAttribute("CHECKCODE_SERVER");
+        session.removeAttribute("CHECKCODE_SERVER");//为了保证验证码只能使用一次
+        //比较
+        if(checkcode_server == null || !checkcode_server.equalsIgnoreCase(code)){
+            //验证码错误
+            //登陆失败
+           message.setFlag(0);
+            message.setMessage("验证码错误");
+            return  message;
+        }
 
         String flag=null;
          System.out.println(userid+ " "+password+" "+shenfen);

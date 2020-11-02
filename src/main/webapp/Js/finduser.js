@@ -50,6 +50,7 @@
             async:false,
             success:function (list) {
                 typelist=list;
+                console.log("111"+typelist);
                 return typelist;
             }
         })

@@ -13,13 +13,17 @@
 						url:'login/test1',
 						type:'post',
 						dataType:'json',
-						data:{userid:$("#userid").val(),password:$("#password").val(),shenfen:3},
+						data:{userid:$("#userid").val(),password:$("#password").val(),shenfen:3,code:$("#check").val()},
 						async:false,
 						success:function (message) {
 
 							if(message.flag==1){
 								 window.location.href="Th_A.html";
-							}else alert(message.message);
+							}else {
+								alert(message.message);
+								var img=document.getElementById("code");
+								changeCheckCode(img);
+							}
 
 						}
 					})
@@ -51,6 +55,19 @@
 				
 				<p>
 					<label style="font-size:25px;font-weight:400;">密码:</label> <input type="password" id="password" style="background: darkgray;"/>
+				</p>
+
+				<p>
+				<td><label for="code">验证码:</label></td>
+				<td><input name="check" id="check" type="text" placeholder="请输入验证码" autocomplete="off" style="background: darkgray;"></td></p>
+
+				<p><td align="center" colspan="2"><span><img src="checkCode" width="115px" height="40px" alt="" id="code" onclick="changeCheckCode(this)"></span></td>
+				<script type="text/javascript">
+					//图片点击事件
+					function changeCheckCode(img) {
+						img.src="checkCode?"+new Date().getTime();
+					}
+				</script>
 				</p>
 				<button style="font-size:25px;font-weight:400;background: darkgray;"  id="but1">登录系统</button>
 				&nbsp;&nbsp;&nbsp;&nbsp;<button style="font-size:25px;font-weight:400;background: darkgray;background: darkgray;" id="but2">返回首页</button>

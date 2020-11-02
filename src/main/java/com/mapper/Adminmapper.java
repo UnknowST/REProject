@@ -1,9 +1,6 @@
 package com.mapper;
 
-import com.daomain.Infor;
-import com.daomain.User;
-import com.daomain.Worker;
-import com.daomain.Worker_type;
+import com.daomain.*;
 
 import java.util.List;
 import java.util.Map;
@@ -17,6 +14,12 @@ public interface Adminmapper {
     List<Worker_type> typeList();
     /* 查询所有待分配的记录*/
     List<Infor> daiinfor();
+    /*查询待维修的维修及*/
+    List<Infor> waitinfor();
+    /*查询正在维修的维修记录*/
+    List<Infor> inginfor();
+    /*查询已维修的维修记录*/
+    List<Infor> succinfor();
     /*查询工人对应的待维修记录*/
     int  suminfor(String workerid);
     /*infor表内记录添加分工的工人账号*/
@@ -29,6 +32,29 @@ public interface Adminmapper {
    int resetpassword(String num);
    /*根据指定的条件搜索对应的user信息*/
    List<User> searchuser(User user );
+   /*查看报销单记录*/
+    List<Bill> billlist();
+    /* 删除指定的报销单记录*/
+    int deletebill(String snum);
+    /*更新报销单记录*/
+    int updatebill(Bill bill);
+    /*添加普通用户*/
+    int InsertUser(User user);
+    /*添加维修师傅*/
+    int InsertWorker(Worker worker);
+    /*删除工人账号*/
+    int deleteworker(String num );
+    /*重置工人账号的密码*/
+    int resetworker(String num);
+    /*更新维修工人的信息*/
+    int updateworker(Worker worker);
+    /*按条件搜索维修师傅*/
+    List<Worker> searchworkers(Worker worker);
+    /*按条件搜索bill*/
+    List<Bill> searchbill(Bill bill);
+
+
+
 
 
 }

@@ -3,8 +3,25 @@
 	<head>
 		<meta charset="utf-8">
 		<title>校园维修系统</title>
+		<script src="Js/finduser.js"></script>
+		<script src="Js/jquery-3.3.1.js"></script>
 
 	<script>
+		$(function () {
+
+			if(getnum('num')==1){
+
+				if (window.performance.navigation.type == 1) {
+					console.log("页面被刷新")
+					$("#p1").html("")
+				}else{
+					console.log("首次被加载")
+					$("#p1").html("你还没登录，请先登录！")
+				}
+
+			}
+
+		})
 		function login(){
 			location.href="login.html";
 		}
@@ -39,6 +56,7 @@
 				<p><button style="font-size:25px;font-weight:400;background: darkgray; width: 130px" onclick="register()">注册</button></p>
 				<br />
 				<p><button style="font-size:25px;font-weight:400;background: darkgray; width: 130px" onclick="Admin()">管理系统</button></p>
+				<p id="p1" style="color: brown"></p>
 			</div>
 			
 		</div>
