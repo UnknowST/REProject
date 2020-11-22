@@ -11,11 +11,18 @@
 					$.ajax({
 							url:'login/insert',
 							type:'post',
-							data:{userid:$("#userid").val(),password:$("#password").val(),num:$("#group").val()},
+							data:{userid:$("#userid").val(),password:$("#password").val(),num:$("#group").val(),code:$("#check").val()},
 							dataType:'json',
 							async:false,
 							success:function (message) {
-								alert(message.message);
+								if(message.flag==1){
+									alert(message.message);
+								}
+								else {
+									alert(message.message);
+									var img=document.getElementById("code");
+									changeCheckCode(img);
+								}
 							}
 					})
 				})
@@ -60,6 +67,17 @@
 				</p>
 				<p>
 					<label style="font-size:25px;font-weight:400;">确认密码:</label> <input type="password" id="password1" style="background: darkgray;"/>
+				</p>
+				<p>
+				<td><label for="code" style="font-size:25px;font-weight:400;">验证码:</label></td>
+				<td><input name="check" id="check" type="text" placeholder="请输入验证码" autocomplete="off" style="background: darkgray;"></td></p>
+				<p><td align="center" colspan="2"><span><img src="checkCode" width="115px" height="40px" alt="" id="code" onclick="changeCheckCode(this)"></span></td>
+				<script type="text/javascript">
+					//图片点击事件
+					function changeCheckCode(img) {
+						img.src="checkCode?"+new Date().getTime();
+					}
+				</script>
 				</p>
 				<button style="font-size:25px;font-weight:400;background: darkgray;" id="but1">确认注册</button>
 				&nbsp;&nbsp;&nbsp;&nbsp;<button style="font-size:25px;font-weight:400;background: darkgray;background: darkgray;" onclick="login()">前往登录</button>

@@ -111,7 +111,19 @@ public class LoginController  {
     /*用户注册*/
     @RequestMapping("/insert")
     @ResponseBody
-    public Message insert(String userid,String password,String num) {
+    public Message insert(String userid,String password,String num,String code,HttpServletRequest request) {
+        //从sesion中获取验证码
+        HttpSession session = request.getSession();
+        String checkcode_server = (String) session.getAttribute("CHECKCODE_SERVER");
+        session.removeAttribute("CHECKCODE_SERVER");//为了保证验证码只能使用一次
+        //比较
+        if(checkcode_server == null || !checkcode_server.equalsIgnoreCase(code)){
+            //验证码错误
+            //登陆失败
+            message.setFlag(0);
+            message.setMessage("验证码错误");
+            return  message;
+        }
         int num1=Integer.parseInt(num);
     System.out.println(userid+" "+password);
         /*表示是插入普通用户*/

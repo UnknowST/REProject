@@ -16,9 +16,10 @@ public class LoginInterceptor implements HandlerInterceptor {
         boolean flag=false;
         //获取资源的请求路径
         String url=request.getRequestURI();
-
+        String projectname=request.getServletContext().getContextPath();
         if(url.contains("/login.html")||url.contains("/login")||url.contains("/Js/")||url.contains("/css/")||url.contains("/img/")
                 ||url.contains("/checkCode")||url.contains("/register.html")||url.contains("/manage.html")||url.contains("/Admin.html")
+                ||url.contains("/admin/nownotice")
         ){
             flag=true;
             System.out.println(url+"#####"+flag);
