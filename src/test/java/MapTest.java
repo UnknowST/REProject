@@ -9,6 +9,7 @@ import org.junit.Test;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
+import java.util.Scanner;
 
 public class MapTest {
     @Test
@@ -22,4 +23,12 @@ public class MapTest {
         System.out.println(listinfor);
         sqlSession.close();
 
-    }}
+    }
+    @Test
+    public void test2(){
+        String path;
+        Scanner sc=new Scanner(System.in);
+        path=sc.nextLine();
+    System.out.println("null".equals(path));
+    }
+}

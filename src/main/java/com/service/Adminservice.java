@@ -1,6 +1,7 @@
 package com.service;
 
 import com.daomain.*;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 import java.util.Map;
@@ -52,4 +53,36 @@ public interface Adminservice {
     List<Worker> searchworkers(Worker worker);
     /*按条件搜索bill*/
     List<Bill> searchbill(Bill bill);
+    /*管理员退回用户填写的维修申请*/
+    int backinfor(@Param("num") String num, @Param("ad_replay")String ad_replay);
+    /*查看维修失败的infor记录*/
+    List<Infor> failinfor();
+    /*查看被退回的infor记录*/
+    List<Infor> A_backinfor();
+    /*撤销退回操作*/
+    int revoke(String num);
+    /*读取设备数据信息*/
+    List<Equipment> equipmentlist();
+    /*设备出库*/
+    int subequip(String snum,String num);
+    /*设备入库*/
+    int addequip(String snum,String num);
+    /*删除设备*/
+    int deleteequipment(String snum);
+    /*添加设备*/
+    int insertequipment(Equipment equipment);
+    /*修改设备信息*/
+    int updateequipment(Equipment equipment);
+    /*查询现在最大的设备编号*/
+    int maxeid();
+    /*查询所有的公告信息*/
+    List<Notice> noticelist();
+    /*更新notice记录*/
+    int updatenotice(Notice notice);
+    /*删除notice*/
+    int deletenotice(String num);
+    /*添加notice记录*/
+    int insertnotice(Notice notice);
+    /*查询当前时间段中显示公告内容*/
+    List<Notice> nownotice();
 }

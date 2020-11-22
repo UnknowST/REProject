@@ -1,6 +1,8 @@
 var imgSrc = []; //图片路径
 var imgFile = []; //文件流
 var imgName = []; //图片名字
+
+
 //选择图片
 function imgUpload(obj) {
     var oInput = '#' + obj.inputId;
@@ -18,15 +20,17 @@ function imgUpload(obj) {
         addNewContent(imgBox);
     })
 /*    $(btn).on('click', function() {
-
-       // var data = new Object;
-        var data=new FormData;
-        data.append("file",imgFile)
-       // data[obj.data] = imgFile;
+   /!*     alert("123")
+        var data = new Object;
+        //var data=new FormData;
+        //data.append("file",imgFile)
+        data[obj.data] = imgFile;
         alert(obj.upUrl);
-        submitPicture(obj.upUrl, data);
+        submitPicture(obj.upUrl, data);*!/
+
 
     })*/
+
 }
 //图片展示
 function addNewContent(obj) {
@@ -46,6 +50,7 @@ function removeImg(obj, index) {
 }
 //上传(将文件流数组传到后台)
 function submitPicture(url,data) {
+
     var formData = new FormData();
     for (let i = 0; i < formData.length; i++) {
         formData.append('image',$("#file1").files[i])

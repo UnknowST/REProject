@@ -8,10 +8,18 @@ import java.util.List;
 
 public class Worker {
     private Integer num;
-    private String userid,name,phone,gender,mail,password,position,workstate,sum_eval,type_worker;
+    private String userid,name,phone,gender,mail,password,position,workstate,sum_eval,type_worker,headpath;
     @DateTimeFormat(pattern="yyyy-MM-dd HH:mm:ss")
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone="GMT+8")
     Date createdate;
+
+    public String getHeadpath() {
+        return headpath;
+    }
+
+    public void setHeadpath(String headpath) {
+        this.headpath = headpath;
+    }
 
     public String getType_worker() {
         return type_worker;

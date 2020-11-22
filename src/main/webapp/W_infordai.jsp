@@ -1,12 +1,7 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: 123
-  Date: 2020/10/24
-  Time: 16:36
-  To change this template use File | Settings | File Templates.
---%>
+
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <html>
 <head>
     <title>w_infordai</title>
@@ -34,7 +29,7 @@
 <div id="div2" align="center">
 
     <p>&nbsp;&nbsp;
-        <a id="id2" href="javascript:void(0)">待维修</a>&nbsp;&nbsp;&nbsp;
+        <a id="id2" href="${pageContext.request.contextPath}/worker/allinfor?workerid=${workerid}&p=1">待维修</a>&nbsp;&nbsp;&nbsp;
         <a href="${pageContext.request.contextPath}/worker/infor_ing?workerid=${workerid}&p=1">正在维修</a>&nbsp;&nbsp;&nbsp;
         <a href="${pageContext.request.contextPath}/worker/infor_ok?workerid=${workerid}&p=1">已维修</a>&nbsp;&nbsp;&nbsp;
        </p>
@@ -64,14 +59,16 @@
                     <td>${infor.place }</td>
                     <td>${infor.equip }</td>
                     <td>${infor.detail }</td>
-                    <c:if test="${infor.imagepath!=null}">
-                        <td><img src="${infor.imagepath }" width="100px" height="120px" alt="诶呀！图片不小心走丢了..." ></td>
-                    </c:if>
-                    <c:if test="${infor.imagepath==null}">
+                    <c:if test="${infor.imagepaths.size()==0}">
                         <td>该用户没有上传图片说明...</td>
                     </c:if>
+                    <c:if test="${infor.imagepaths.size()!=0}">
+                        <td><img src="${infor.imagepaths.get(0) }" width="100px" height="120px" alt="诶呀！图片不小心走丢了..." ></td>
+                    </c:if>
                     <td>${infor.state }</td>
-                    <td>${infor.createdate }</td>
+                    <td> <fmt:formatDate type="both"
+                                         dateStyle="long" timeStyle="long"
+                                         value="${infor.createdate}" /></td>
                     <td><a href="javascript:void(0)" onclick="okinfor('${infor.num}')">确认维修单</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                         </td>
                 </tr>

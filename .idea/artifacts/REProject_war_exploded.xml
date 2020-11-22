@@ -14,6 +14,9 @@
           <element id="module-output" name="REProject" />
         </element>
         <element id="directory" name="lib">
+          <element id="archive" name="REProject-1.0-SNAPSHOT.jar">
+            <element id="module-output" name="REProject" />
+          </element>
           <element id="library" level="project" name="Maven: org.springframework:spring-context:5.0.5.RELEASE" />
           <element id="library" level="project" name="Maven: org.springframework:spring-aop:5.0.5.RELEASE" />
           <element id="library" level="project" name="Maven: org.springframework:spring-beans:5.0.5.RELEASE" />
@@ -44,6 +47,7 @@
           <element id="library" level="project" name="Maven: commons-io:commons-io:2.3" />
           <element id="library" level="project" name="Maven: com.github.pagehelper:pagehelper:3.7.5" />
           <element id="library" level="project" name="Maven: com.github.jsqlparser:jsqlparser:0.9.1" />
+          <element id="library" level="project" name="Maven: com.jcraft:jsch:0.1.54" />
         </element>
       </element>
       <element id="directory" name="META-INF">

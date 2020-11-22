@@ -7,10 +7,26 @@ import java.util.Date;
 
 public class Replay {
     private Integer num;
-    private String inforid,workerid,detail;
+    private String inforid,workerid,detail,eid,numbers;
     @DateTimeFormat(pattern="yyyy-MM-dd HH:mm:ss")
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone="GMT+8")
     Date createdate;
+
+    public String getEid() {
+        return eid;
+    }
+
+    public void setEid(String eid) {
+        this.eid = eid;
+    }
+
+    public String getNumbers() {
+        return numbers;
+    }
+
+    public void setNumbers(String numbers) {
+        this.numbers = numbers;
+    }
 
     public Integer getNum() {
         return num;

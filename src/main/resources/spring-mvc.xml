@@ -29,14 +29,14 @@ http://www.springframework.org/schema/context/spring-context.xsd">
     </bean>
 
     <!--拦截器映射-->
-    <mvc:interceptors>
+<!--    <mvc:interceptors>
 
         <mvc:interceptor>
             <mvc:mapping path="/**"/>
             <bean class="com.Interceptor.LoginInterceptor"></bean>
 
         </mvc:interceptor>
-    </mvc:interceptors>
+    </mvc:interceptors>-->
 
 
 </beans>

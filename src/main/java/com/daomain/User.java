@@ -9,10 +9,18 @@ import java.util.List;
 
 public class User {
     private Integer num;
-    private String userid,username,password,phone,name,gender,collage,mail;
+    private String userid,username,password,phone,name,gender,collage,mail,headpath;
     @DateTimeFormat(pattern="yyyy-MM-dd HH:mm:ss")
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone="GMT+8")
     Date createdate;
+
+    public String getHeadpath() {
+        return headpath;
+    }
+
+    public void setHeadpath(String headpath) {
+        this.headpath = headpath;
+    }
 
     public Integer getNum() {
         return num;

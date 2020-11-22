@@ -151,3 +151,39 @@ controller和html ajax的交互成功
     //tr隐藏操作 还需要设置
     //搜索bill哪里 点击下一页有错误
     //登录拦截器待完成
+    //上传文件的路径完全解决
+    //多图上传问题解决
+    //xml文件中特殊符号的写法
+   第一种写法（1）：
+
+   原符号       <        <=      >       >=       &        '        "
+   替换符号    &lt;    &lt;=   &gt;    &gt;=   &amp;   &apos;  &quot;
+   例如：sql如下：
+   create_date_time &gt;= #{startTime} and  create_date_time &lt;= #{endTime}
+
+   第二种写法（2）：
+   大于等于 <![CDATA[ >= ]]>
+   小于等于 <![CDATA[ <= ]]>
+   例如：sql如下：
+   create_date_time <![CDATA[ >= ]]> #{startTime}
+   and  create_date_time <![CDATA[ <= ]]> #{endTime}
+
+   <!--        <collection property="imagepaths" ofType="string" javaType="list" >
+               &lt;!&ndash; 这里使用构造方法注入，String 没有属性&ndash;&gt;
+               <constructor>
+                   <arg column="imagepath"/>
+
+               </constructor>
+           </collection>-->
+       //解决图片数量动态变化的问题 接下来就是输出图片
+       //订单完成双向认证
+       //完成装备表的问题
+       //完成登录页面滚动的维修公告问题
+       //解决注册信息还不够详细的问题 ---还待商榷
+       //解决用户修改基本信息 进入死循环的问题
+       //双向认证订单 需要变化装备数据的信息
+       //mybatis sql注入数据找不到数据的时候 在mapper文件中对参数进行@Param注解
+       //js中需要jstl中的值跟js中的变量比较的时候对jstl的值打上双冒号或但冒号就可以
+
+       //最后两个问题 用话查看最终已经确认的维修信息
+       //修改维修申报记录的时候图片怎么处理

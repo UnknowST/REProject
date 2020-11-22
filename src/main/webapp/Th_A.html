@@ -18,6 +18,9 @@ if (page==1)  {
 	document.getElementById("page4").style.display="none";
 	document.getElementById("page5").style.display="none";
 	document.getElementById("page6").style.display="none";
+	document.getElementById("page7").style.display="none";
+	document.getElementById("page8").style.display="none";
+	document.getElementById("page9").style.display="none";
 }
 if (page==2)  {
 	document.getElementById("page2").style.display="block";
@@ -26,6 +29,9 @@ if (page==2)  {
 	document.getElementById("page4").style.display="none";
 	document.getElementById("page5").style.display="none";
 	document.getElementById("page6").style.display="none";
+	document.getElementById("page7").style.display="none";
+	document.getElementById("page8").style.display="none";
+	document.getElementById("page9").style.display="none";
 }
 if (page==3)  {
 	document.getElementById("page3").style.display="block";
@@ -34,6 +40,9 @@ if (page==3)  {
 	document.getElementById("page4").style.display="none";
 	document.getElementById("page5").style.display="none";
 	document.getElementById("page6").style.display="none";
+	document.getElementById("page7").style.display="none";
+	document.getElementById("page8").style.display="none";
+	document.getElementById("page9").style.display="none";
 }
 if (page==4)  {
 	document.getElementById("page4").style.display="block";
@@ -42,6 +51,9 @@ if (page==4)  {
 	document.getElementById("page3").style.display="none";
 	document.getElementById("page5").style.display="none";
 	document.getElementById("page6").style.display="none";
+	document.getElementById("page7").style.display="none";
+	document.getElementById("page8").style.display="none";
+	document.getElementById("page9").style.display="none";
 }
 if (page==5)  {
 	document.getElementById("page5").style.display="block";
@@ -50,6 +62,9 @@ if (page==5)  {
 	document.getElementById("page4").style.display="none";
 	document.getElementById("page3").style.display="none";
 	document.getElementById("page6").style.display="none";
+	document.getElementById("page7").style.display="none";
+	document.getElementById("page8").style.display="none";
+	document.getElementById("page9").style.display="none";
 }
 if (page==6)  {
 	document.getElementById("page6").style.display="block";
@@ -58,7 +73,43 @@ if (page==6)  {
 	document.getElementById("page4").style.display="none";
 	document.getElementById("page3").style.display="none";
 	document.getElementById("page5").style.display="none";
+	document.getElementById("page7").style.display="none";
+	document.getElementById("page8").style.display="none";
+	document.getElementById("page9").style.display="none";
 }
+	if (page==7)  {
+		document.getElementById("page6").style.display="none";
+		document.getElementById("page2").style.display="none";
+		document.getElementById("page1").style.display="none";
+		document.getElementById("page4").style.display="none";
+		document.getElementById("page3").style.display="none";
+		document.getElementById("page5").style.display="none";
+		document.getElementById("page7").style.display="block";
+		document.getElementById("page8").style.display="none";
+		document.getElementById("page9").style.display="none";
+	}
+	if (page==8)  {
+		document.getElementById("page6").style.display="none";
+		document.getElementById("page2").style.display="none";
+		document.getElementById("page1").style.display="none";
+		document.getElementById("page4").style.display="none";
+		document.getElementById("page3").style.display="none";
+		document.getElementById("page5").style.display="none";
+		document.getElementById("page7").style.display="bone";
+		document.getElementById("page8").style.display="block";
+		document.getElementById("page9").style.display="none";
+	}
+	if (page==9)  {
+		document.getElementById("page6").style.display="none";
+		document.getElementById("page2").style.display="none";
+		document.getElementById("page1").style.display="none";
+		document.getElementById("page4").style.display="none";
+		document.getElementById("page3").style.display="none";
+		document.getElementById("page5").style.display="none";
+		document.getElementById("page7").style.display="bone";
+		document.getElementById("page8").style.display="none";
+		document.getElementById("page9").style.display="block";
+	}
 }
 
 </script>
@@ -184,7 +235,20 @@ if (page==6)  {
 <iframe src="A_AddUser.html"    frameborder="0" leftmargin="0"></iframe>
 </div>
 
+<!-- 异常维修信息 -->
+<div id="page7" style="display:none;">
+<iframe src="admin/failinfor?p=1"    frameborder="0" leftmargin="0"></iframe>
+</div>
 
+<!-- 设备管理-->
+<div id="page8" style="display:none;">
+<iframe src="admin/equipmentlist?p=1"    frameborder="0" leftmargin="0"></iframe>
+</div>
+
+<!-- 公告栏管理-->
+<div id="page9" style="display:none;">
+<iframe src="admin/noticelist?p=1"    frameborder="0" leftmargin="0"></iframe>
+</div>
 <!-- 功能对应的HTML网页 -->
 </td></tr>   <!-- 要添加功能，注意修改rowspan的值 -->
 
@@ -193,6 +257,9 @@ if (page==6)  {
 	<tr>  <td><a href="javascript:showpage(4)">查看工人信息</a></td></tr>
 	<tr>  <td><a href="javascript:showpage(5)">搜索用户</a></td></tr>
 	<tr>  <td><a href="javascript:showpage(6)">添加用户</a></td></tr>
+	<tr>  <td><a href="javascript:showpage(7)">异常维修信息</a></td></tr>
+	<tr>  <td><a href="javascript:showpage(8)">设备管理</a></td></tr>
+	<tr>  <td><a href="javascript:showpage(9)">公告栏管理</a></td></tr>
 <tr>  <td>更多功能，敬请期待...</td></tr>
 <tr>  <td></td></tr>
 <tr>  <td></td></tr>

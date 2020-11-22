@@ -7,7 +7,7 @@ import java.util.Date;
 
 public class Equipment {
     Integer snum;
-    String num,eqname,model,address,attribute;
+    String eqname,model,number,price,company_name,eid;
     @DateTimeFormat(pattern="yyyy-MM-dd HH:mm:ss")
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone="GMT+8")
     Date createdate;
@@ -18,14 +18,6 @@ public class Equipment {
 
     public void setSnum(Integer snum) {
         this.snum = snum;
-    }
-
-    public String getNum() {
-        return num;
-    }
-
-    public void setNum(String num) {
-        this.num = num;
     }
 
     public String getEqname() {
@@ -44,20 +36,36 @@ public class Equipment {
         this.model = model;
     }
 
-    public String getAddress() {
-        return address;
+    public String getNumber() {
+        return number;
     }
 
-    public void setAddress(String address) {
-        this.address = address;
+    public void setNumber(String number) {
+        this.number = number;
     }
 
-    public String getAttribute() {
-        return attribute;
+    public String getPrice() {
+        return price;
     }
 
-    public void setAttribute(String attribute) {
-        this.attribute = attribute;
+    public void setPrice(String price) {
+        this.price = price;
+    }
+
+    public String getCompany_name() {
+        return company_name;
+    }
+
+    public void setCompany_name(String company_name) {
+        this.company_name = company_name;
+    }
+
+    public String getEid() {
+        return eid;
+    }
+
+    public void setEid(String eid) {
+        this.eid = eid;
     }
 
     public Date getCreatedate() {
@@ -72,11 +80,12 @@ public class Equipment {
     public String toString() {
         return "Equipment{" +
                 "snum=" + snum +
-                ", num='" + num + '\'' +
                 ", eqname='" + eqname + '\'' +
                 ", model='" + model + '\'' +
-                ", address='" + address + '\'' +
-                ", attribute='" + attribute + '\'' +
+                ", number='" + number + '\'' +
+                ", price='" + price + '\'' +
+                ", company_name='" + company_name + '\'' +
+                ", eid='" + eid + '\'' +
                 ", createdate=" + createdate +
                 '}';
     }

@@ -1,12 +1,7 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: 123
-  Date: 2020/10/24
-  Time: 15:03
-  To change this template use File | Settings | File Templates.
---%>
+
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <html>
 <head>
     <title>daifenpei</title>
@@ -37,10 +32,12 @@
 <div id="div2" align="center">
 
     <p><a id="id1" href="${pageContext.request.contextPath}/user/allinfor?userid=${userid}&p=1">全部维修单</a>&nbsp;&nbsp;&nbsp;
-        <a href="javascript:void(0)">待分配</a>&nbsp;&nbsp;&nbsp;
+        <a id="id2" href="${pageContext.request.contextPath}/user/infor_dai?userid=${userid}&p=1">待分配</a>&nbsp;&nbsp;&nbsp;
         <a href="${pageContext.request.contextPath}/user/infor_wait?userid=${userid}&p=1">待维修</a>&nbsp;&nbsp;&nbsp;
         <a href="${pageContext.request.contextPath}/user/infor_ing?userid=${userid}&p=1">正在维修</a>&nbsp;&nbsp;&nbsp;
-        <a href="${pageContext.request.contextPath}/user/infor_eval?userid=${userid}&p=1">待评价</a></p>
+        <a href="${pageContext.request.contextPath}/user/infor_eval?userid=${userid}&p=1">维修完成待确认</a>&nbsp;&nbsp;&nbsp;
+        <a href="${pageContext.request.contextPath}/user/infor_ok?userid=${userid}&p=1">已确认完成</a>
+    </p>
 
 </div>
 <%--全部维修单--%>
@@ -67,14 +64,17 @@
                     <td>${infor.place }</td>
                     <td>${infor.equip }</td>
                     <td>${infor.detail }</td>
-                    <c:if test="${infor.imagepath!=null}">
-                        <td><img src="${infor.imagepath }" width="100px" height="120px" alt="诶呀！图片不小心走丢了..." ></td>
-                    </c:if>
-                    <c:if test="${infor.imagepath==null}">
+                    <c:if test="${infor.imagepaths.size()==0}">
                         <td>该用户没有上传图片说明...</td>
                     </c:if>
+                    <c:if test="${infor.imagepaths.size()!=0}">
+                        <td><img src="${infor.imagepaths.get(0) }" width="100px" height="120px" alt="诶呀！图片不小心走丢了..." ></td>
+                    </c:if>
                     <td>${infor.state }</td>
-                    <td>${infor.createdate }</td>
+
+                    <td> <fmt:formatDate type="both"
+                                         dateStyle="long" timeStyle="long"
+                                         value="${infor.createdate}" /></td>
                     <td><a href="${pageContext.request.contextPath}/user/infor_num?num=${infor.num}">详细查看</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                         <a onclick="state('${infor.num}')" href="javascript:void(0)" >删除</a></td>
                 </tr>

@@ -1,13 +1,63 @@
 <!DOCTYPE html>
-<html>
+
+<html lang="en">
 	<head>
 		<meta charset="utf-8">
 		<title>校园维修系统</title>
 		<script src="Js/finduser.js"></script>
 		<script src="Js/jquery-3.3.1.js"></script>
+		<script src="Js/jquery-1.11.0.min.js"></script>
+		<style>
+			.div1{
+				padding-top: 0px;
+				padding-left: 650px;
+			}
+			div,ul,li{margin: 0;padding: 0}/*先初始化一下默认样式*/
+			.notice {
 
+				/*padding-left: 750px;
+				padding-top: -100px;*/
+				width: 700px;/*单行显示，超出隐藏*/
+				height: 300px;/*固定公告栏显示区域的高度*/
+				/*padding: 0 30px;*/
+				/*background-color: #b3effe;*/
+				overflow: hidden;
+				border: 3px solid crimson;
+			}
+			.notice ul li {
+				font-size: 30px;
+				list-style: none;
+				line-height:40px;
+				/*以下为了单行显示，超出隐藏*/
+				display: block;
+				/*//white-space: nowrap;*/
+				text-overflow: ellipsis;
+				overflow: hidden;
+				white-space:normal;
+				word-break : break-all;
+				word-wrap: break-word;
+			}
+		</style>
 	<script>
 		$(function () {
+			//获取公告栏数据
+			$.ajax({
+				url:'admin/nownotice',
+				dataType:'json',
+				type:'get',
+				async:false,
+				success:function (list) {
+					var kai='<ul>'
+					var jie='</ul>'
+					var li=" ";
+					for(var i=0;i<list.length;i++){
+
+						li+='<li>'+list[i].news+'</li><br><br>'
+					}
+					$("#ul1").append(li);
+
+				}
+			})
 
 			if(getnum('num')==1){
 
@@ -32,19 +82,16 @@
 			location.href="Admin.html";
 		}
 	</script>
-<style>
-	a{
-		text-decoration: none;
-		color: #000;
-		font-size: 20px;
-	}
-</style>
+
 	</head>
-	<body bgcolor="#6cf" ">
+	<body bgcolor="#6cf" >
 		<p align="center" style="font-size:35px;font-weight:800;" >	上  海  海  洋  大  学  校  园  维  修  系  统
 </p>
+
 		<br />
-		<div style="width: 800px;height: 300px;background-color: black;margin:0 auto;margin-top: 10x;background-color: #6cf;" align="center">
+
+
+		<div style="padding-left:0px;width: 800px;height: 300px;background-color: black;margin:0 auto;margin-top: 10px;background-color: #6cf;" >
 			<div style="float: left;width: 400px;height: 500px;">
 				<img src="img/logo.png" style="width: 400px;height: 400px;"/>
 			</div>
@@ -58,15 +105,53 @@
 				<p><button style="font-size:25px;font-weight:400;background: darkgray; width: 130px" onclick="Admin()">管理系统</button></p>
 				<p id="p1" style="color: brown"></p>
 			</div>
-			
+
 		</div>
-		
-		
+
+		<div class="div1">
+			<p align="center" style="font-size: 50px;color:palegoldenrod"><span>公告栏</span><span><img src="img/timg3.gif" width="65px" height="60px"></span></p>
+			<div class="notice">
+				<ul id="ul1">
+					<li>第1条公告第1条公告第1条公告第1条公告第1条公告第1条公告</li>
+					<li>第2条公告第2条公告第2条公告第2条公告第2条公告第2条公告</li>
+					<li>第3条公告第3条公告第3条公告第3条公告第3条公告第3条公告</li>
+					<li>第4条公告第4条公告第4条公告第4条公告第4条公告第4条公告</li>
+				</ul>
+			</div>
+		</div>
 		<div style="clear:both;">
-		<p style="margin-top: 5x;" align="center"  ><a href="About.html">关于系统开发/联系作者</a></p>
+		<p style="margin-top: 5px;" align="center"  ><a href="About.html">关于系统开发/联系作者</a></p>
 		</div>
+
+
+
+		<script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+		<script src="noticeUp.js"></script>
+		<script>
+			$(function () {
+				// 调用 公告滚动函数
+				setInterval("noticeUp('.notice ul','-35px',500)", 2000);
+			});
+		</script>
+		<script>
+			/*
+          * 参数说明
+          * obj : 动画的节点，本例中是ul
+          * top : 动画的高度，本例中是-35px;注意向上滚动是负数
+          * time : 动画的速度，即完成动画所用时间，本例中是500毫秒，即marginTop从0到-35px耗时500毫秒
+          * function : 回调函数，每次动画完成，marginTop归零，并把此时第一条信息添加到列表最后;
+          *
+          */
+			function noticeUp(obj,top,time) {
+				$(obj).animate({
+					marginTop: top
+				}, time, function () {
+					$(this).css({marginTop:"0"}).find(":first").appendTo(this);
+				})
+			}
+		</script>
 	</body>
-	
+
 	
 	
 	

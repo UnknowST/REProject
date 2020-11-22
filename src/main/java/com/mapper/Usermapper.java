@@ -2,6 +2,7 @@ package com.mapper;
 
 import com.daomain.Infor;
 import com.daomain.User;
+import org.apache.ibatis.annotations.Param;
 import org.omg.PortableInterceptor.INACTIVE;
 
 import javax.sound.sampled.Line;
@@ -39,8 +40,15 @@ public interface Usermapper {
     /*修改用户密码*/
     int modif_pass(String num,String password);
     /*用户评分修改Infor表*/
-    int updateevl(String num,String fenshu,String workerid);
+    int updateevl(String num,String fenshu,String workerid,String comment);
     /*用户评分后修改工人数据表*/
     int updatew_evl(String num,String fenshu);
-
+    /*更新用户头像*/
+    int user_head(String userid,String headpath);
+    /*查看近一个月的维修公告记录*/
+    List<Infor> listInfor();
+    /*查看异常的维修订单*/
+    List <Infor> normalInfor(String userid);
+    /*用户查看最终确认的维修记录*/
+    List<Infor> infor_ok(String userid);
 }

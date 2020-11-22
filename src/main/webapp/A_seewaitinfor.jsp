@@ -55,11 +55,11 @@
                     <td>${infor.place }</td>
                     <td>${infor.equip }</td>
                     <td>${infor.detail }</td>
-                    <c:if test="${infor.imagepath!=null}">
-                        <td><img src="${infor.imagepath }" width="100px" height="120px" alt="诶呀！图片不小心走丢了..." ></td>
-                    </c:if>
-                    <c:if test="${infor.imagepath==null}">
+                    <c:if test="${infor.imagepaths.size()==0}">
                         <td>该用户没有上传图片说明...</td>
+                    </c:if>
+                    <c:if test="${infor.imagepaths.size()!=0}">
+                        <td><img src="${infor.imagepaths.get(0) }" width="100px" height="120px" alt="诶呀！图片不小心走丢了..." ></td>
                     </c:if>
                     <td>${infor.state }</td>
                     <td>${infor.workerid}</td>

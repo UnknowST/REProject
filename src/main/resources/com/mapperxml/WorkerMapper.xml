@@ -18,16 +18,24 @@
         <result column="place" property="place"></result>
         <result column="equip" property="equip"></result>
         <result column="detail" property="detail"></result>
-        <result column="imagepath" property="imagepath"></result>
+        <result column="ad_replay" property="ad_replay"></result>
+        <result column="imagepath1" property="imagepath1"></result>
+        <result column="imagepath2" property="imagepath2"></result>
+        <result column="imagepath3" property="imagepath3"></result>
+        <result column="imagepath4" property="imagepath4"></result>
+        <result column="imagepath5" property="imagepath5"></result>
         <result column="evaluate" property="evaluate"></result>
         <result column="workerid" property="workerid"></result>
         <result column="state" property="state"></result>
+        <result column="comment" property="comment"></result>
         <result column="icreatedate" property="createdate"></result>
         <association property="replay" javaType="replay" column="inum">
             <id column="rnum" property="num"></id>
             <result column="inforid" property="inforid"></result>
             <result column="workerid" property="workerid"></result>
             <result column="rdetail" property="detail"></result>
+            <result column="eid" property="eid"></result>
+            <result column="numbers" property="numbers"></result>
             <result column="rcreatedate" property="createdate"></result>
         </association>
     </resultMap>
@@ -60,7 +68,36 @@
     </update>
 
     <update id="success_infor" parameterType="string">
-        update infor set state="已维修" where num=#{num}
+        update infor set state=#{arg1} where num=#{arg0}
+    </update>
+    <update id="play_replay" parameterType="string">
+            update replay set eid=#{eid},detail=#{detail},numbers=#{numbers} where inforid=#{inforid}
+   <!--     <set >
+            <if test="eid!=null and eid!=' '">
+                eid=#{eid},
+            </if>
+            <if test="numbers!=null and numbers!=' '">
+                numbers=#{numbers},
+            </if>
+            <if test="detail!=null and detail!=' '">
+                detail=#{detail},
+            </if>
+        </set>
+        <where>
+            inforid=#{inforid}
+        </where>-->
+
+
+    </update>
+
+    <update id="play_equipment" parameterType="string">
+        update equipment  set number=number-#{number} where eid=#{eid}
+     <!--   <set>
+            <if test="numbers!=null and numbers!=' '">
+                number=number-#{number},
+            </if>
+        </set>
+         where eid=#{eid}-->
     </update>
 
     <select id="billnum" resultType="string">
@@ -73,5 +110,11 @@
 
     <select id="listbill" resultType="bill">
         select * from bill where workerid=#{workerid} ORDER  BY createdate DESC
+    </select>
+    <update id="updatehead">
+        update worker set headpath=#{param2} where userid=#{param1}
+    </update>
+    <select id="equipmentlist" resultType="equipment">
+        select * from equipment
     </select>
 </mapper>

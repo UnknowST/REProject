@@ -49,11 +49,11 @@
                     <td>${infor.place }</td>
                     <td>${infor.equip }</td>
                     <td>${infor.detail }</td>
-                    <c:if test="${infor.imagepath!=null}">
-                        <td><img src="${infor.imagepath }" width="100px" height="120px" alt="诶呀！图片不小心走丢了..." ></td>
-                    </c:if>
-                    <c:if test="${infor.imagepath==null}">
+                    <c:if test="${infor.imagepaths.size()==0}">
                         <td>该用户没有上传图片说明...</td>
+                    </c:if>
+                    <c:if test="${infor.imagepaths.size()!=0}">
+                        <td><img src="${infor.imagepaths.get(0) }" width="100px" height="120px" alt="诶呀！图片不小心走丢了..." ></td>
                     </c:if>
                     <td>${infor.state }</td>
                     <td> <fmt:formatDate type="both"
@@ -62,6 +62,7 @@
 
                     <td>
                         <a href="javascript:void(0)" onclick="xianshi('${infor.num}')" >分配</a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        <a href="javascript:void(0)" onclick="backinfor('${infor.num}')">退回</a>&nbsp;&nbsp;
                         <a onclick="state('${infor.num}')" href="javascript:void(0)" >删除</a></td>
                 </tr>
             </c:forEach>
@@ -90,6 +91,26 @@
 <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/css/popup.css" />  <!--//引入css-->
 
 <script>
+    function backinfor(num){
+
+        var st=prompt("退回原因：");
+        if(st){
+            $.ajax({
+                url:'${pageContext.request.contextPath}/admin/backinfor',
+                dataType:'json',
+                type:'get',
+                async:false,
+                data:{num:num,ad_replay:st},
+                success:function(message){
+                    if(message.flag==1){
+                        alert(message.message);
+                        window.history.go(0);
+                    }else alert(message.message);
+                }
+            })
+        }
+    }
+
     $(function () {
         //获取所有的工人种类
         var typelist=null;

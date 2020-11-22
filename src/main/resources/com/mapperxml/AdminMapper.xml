@@ -10,21 +10,29 @@
         <result column="place" property="place"></result>
         <result column="equip" property="equip"></result>
         <result column="detail" property="detail"></result>
-        <result column="imagepath" property="imagepath"></result>
+        <result column="ad_replay" property="ad_replay"></result>
+        <result column="imagepath1" property="imagepath1"></result>
+        <result column="imagepath2" property="imagepath2"></result>
+        <result column="imagepath3" property="imagepath3"></result>
+        <result column="imagepath4" property="imagepath4"></result>
+        <result column="imagepath5" property="imagepath5"></result>
         <result column="evaluate" property="evaluate"></result>
         <result column="workerid" property="workerid"></result>
         <result column="state" property="state"></result>
+        <result column="comment" property="comment"></result>
         <result column="icreatedate" property="createdate"></result>
         <collection property="replay" ofType="replay">
             <result column="rnum" property="num"></result>
             <result column="inforid" property="inforid"></result>
             <result column="workerid" property="workerid"></result>
             <result column="rdetail" property="detail"></result>
+            <result column="eid" property="eid"></result>
+            <result column="numbers" property="numbers"></result>
             <result column="rcreatedate" property="createdate"></result>
         </collection>
     </resultMap>
 
-    <select id="listOf" resultMap="inforMap" >
+    <select id="listOf" resultMap="inforMap">
         SELECT *,i.num inum,r.num rnum ,i.createdate icreatedate,r.createdate rcreatedate,i.detail idetail,r.detail rdetail
         FROM infor i,replay r WHERE  i.num=r.inforid
     </select>
@@ -94,7 +102,7 @@
         </where>
     </select>
 
-    <select id="billlist" resultType="bill" >
+    <select id="billlist" resultType="bill">
         select * from bill
     </select>
     <delete id="deletebill" parameterType="string">
@@ -130,7 +138,7 @@
             <if test="position!=null and position!= ''">
                 and positione=#{position}
             </if>
-            <if test="type_worker!=null and type_worker!=''">
+            <if test="type_worker!=null and type_worker!='' and type_worker!=-1 ">
                 and type_worker=#{type_worker}
             </if>
             <if test="workstate!=null and workstate!=''">
@@ -156,4 +164,107 @@
             </if>
         </where>
     </select>
+
+    <update id="backinfor" parameterType="string">
+        update infor set ad_replay=#{arg1},state="退回" where num=#{arg0}
+    </update>
+
+    <select id="failinfor" resultMap="inforMap">
+        SELECT
+	*,
+	imagepath1 imagepath,
+	imagepath2 imagepath,
+	imagepath3 imagepath,
+	imagepath4 imagepath,
+	imagepath5 imagepath,
+	i.num inum,
+	r.num rnum,
+	i.createdate icreatedate,
+	r.createdate rcreatedate,
+	i.detail idetail,
+	r.detail rdetail
+FROM
+	infor i,
+	replay r
+WHERE
+
+	i.num = r.inforid
+	AND i.state = "维修失败"
+ORDER BY
+	i.createdate DESC
+    </select>
+
+    <select id="A_backinfor" resultMap="inforMap">
+        SELECT
+	*,
+	imagepath1 imagepath,
+	imagepath2 imagepath,
+	imagepath3 imagepath,
+	imagepath4 imagepath,
+	imagepath5 imagepath,
+	i.num inum,
+	r.num rnum,
+	i.createdate icreatedate,
+	r.createdate rcreatedate,
+	i.detail idetail,
+	r.detail rdetail
+FROM
+	infor i,
+	replay r
+WHERE
+     i.num = r.inforid
+	and i.state = "退回"
+ORDER BY
+	i.createdate DESC
+    </select>
+    <update id="revoke" parameterType="string">
+    update infor set state="待分配",ad_replay="" where num=#{num}
+</update>
+
+    <select id="equipmentlist" resultType="equipment">
+        select * from equipment
+    </select>
+
+    <update id="addequip" parameterType="string">
+        update equipment set number=number+#{num} where snum=#{snum}
+    </update>
+    <update id="subequip" parameterType="string">
+        update equipment set number=number-#{num} where snum=#{snum}
+    </update>
+    <update id="updateequipment" parameterType="equipment">
+        update equipment set
+        eqname=#{eqname},
+        model=#{model},
+        price=#{price},
+        company_name=#{company_name},
+        number=#{number}
+        where snum=#{snum}
+    </update>
+    <insert id="insertequipment" parameterType="equipment">
+        insert into equipment(eid,eqname,price,company_name,number,model) values(#{eid},#{eqname},#{price},#{company_name},#{number},#{model})
+    </insert>
+    <delete id="deleteequipment" parameterType="string">
+        delete from equipment where snum=#{snum}
+    </delete>
+    <select id="maxeid" resultType="int">
+        	select max(eid) from equipment;
+    </select>
+    <select id="noticelist"  resultType="notice">
+        select * from notice
+    </select>
+
+    <delete id="deletenotice" parameterType="string">
+        delete from notice where num=#{num}
+    </delete>
+    <update id="updatenotice">
+        update notice set news=#{news} ,startime=#{startime},endtime=#{endtime} where num=#{num}
+    </update>
+    <insert id="insertnotice">
+        insert into notice(news,startime,endtime) values (#{news},#{startime},#{endtime})
+    </insert>
+
+    <select id="nownotice" resultType="notice">
+        select * from notice where startime&lt;=now() and endtime&gt;=now()
+    </select>
+
 </mapper>

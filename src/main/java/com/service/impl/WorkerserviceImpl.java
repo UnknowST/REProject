@@ -1,6 +1,7 @@
 package com.service.impl;
 
 import com.daomain.Bill;
+import com.daomain.Equipment;
 import com.daomain.Infor;
 import com.daomain.Worker;
 import com.mapper.Workermapper;
@@ -57,8 +58,8 @@ public class WorkerserviceImpl implements Workerservice {
     }
 
     @Override
-    public int success_infor(String num) {
-    return workermapper.success_infor(num);
+    public int success_infor(String num,String state) {
+    return workermapper.success_infor(num,state);
     }
 
     @Override
@@ -74,5 +75,34 @@ public class WorkerserviceImpl implements Workerservice {
     @Override
     public List<Bill> listbill(String workerid) {
     return workermapper.listbill(workerid);
+    }
+
+    @Override
+    public int updatehead(String workerid, String headpath) {
+        return workermapper.updatehead(workerid,headpath);
+    }
+
+    @Override
+    public List<Equipment> equipmentlist() {
+    return workermapper.equipmentlist();
+    }
+
+    @Override
+    public int worker_success(String num, String eid, String state, String detail, String numbers) {
+    System.out.println("test++++++"+num+eid+state+detail+numbers);
+        int j=1;
+        int i=workermapper.success_infor(num,state);
+        if("0".equals(eid)==false){
+             System.out.println("play_equipment");
+            try {
+                j=workermapper.play_equipment(eid,numbers);
+            } catch (Exception e) {
+                j=-1;
+            }
+        }
+
+        int h=workermapper.play_replay(num,detail,eid,numbers);
+        if(i==1&&j==1&&h==1) return 1;
+        return 0;
     }
 }

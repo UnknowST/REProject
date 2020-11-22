@@ -67,8 +67,8 @@ public class UserserviceImpl implements Userservice {
 
 
     @Override
-    public int updateevl(String num, String fenshu,String workerid) {
-        int i=usermapper.updateevl(num,fenshu,workerid);
+    public int updateevl(String num, String fenshu,String workerid,String comment) {
+        int i=usermapper.updateevl(num,fenshu,workerid,comment);
         int j=usermapper.updatew_evl(workerid,fenshu);
         if (i==1&&j==1) return 1;
         else return 0;
@@ -94,6 +94,27 @@ public class UserserviceImpl implements Userservice {
     @Override
     public List<Infor> infor_eval(String userid) {
         return usermapper.infor_eval(userid);
+    }
+
+    @Override
+    public int user_head(String userid,String headpath) {
+
+        return usermapper.user_head(userid,headpath);
+    }
+
+    @Override
+    public List<Infor> listInfor() {
+        return usermapper.listInfor();
+    }
+
+    @Override
+    public List<Infor> normalInfor(String userid) {
+        return usermapper.normalInfor(userid);
+    }
+
+    @Override
+    public List<Infor> infor_ok(String userid) {
+        return usermapper.infor_ok(userid);
     }
 
 }

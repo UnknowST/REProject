@@ -17,10 +17,11 @@
 			$("#collage").find('option[value='+getuser().collage+']').attr("selected",true);
 			$('input[value="'+getuser().gender+'"]').prop("checked",true);
 			$("#change").click(function () {
+
 				$.ajax({
 					url:'user/update',
 					type:'post',
-					data:{gender:$("#gender").val(),collage:$("#collage").val(),name:$("#name").val(),phone:$("#phone").val(),mail:$("#mail").val(),num:getuser().num},
+					data:{gender:$('input:radio[name="gender"]:checked').val(),collage:$("#collage").val(),name:$("#name").val(),phone:$("#phone").val(),mail:$("#mail").val(),num:getuser().num},
 					dataType:'json',
 					async:false,
 					success:function (message) {

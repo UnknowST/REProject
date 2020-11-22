@@ -1,12 +1,7 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: 123
-  Date: 2020/10/24
-  Time: 13:31
-  To change this template use File | Settings | File Templates.
---%>
+
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <html>
 <head>
     <title>infordetail</title>
@@ -101,43 +96,25 @@
         }
     </style>
     <script>
+
+        function removeimg(i) {
+            id='#divv'+i;   //删除原本上传的图片
+           $(id).remove();
+           imgSrc.pop(i);
+        }
         function a1() {
             $("#tb1").css("display","none");
             $("#div2").css("display","block");
-            //确认修改
-            $("#aa1").click(function () {
-                var data=new FormData(document.getElementById("f1"))
-                data.append("num",${infor.num});
-                data.append("place",$("#place").val())
-                data.append("equip",$("#equip").val())
-                data.append(("detail"),$("#detail").val())
-                $.ajax(
-                    {
-                        type: "POST",
+            src=[]
+         <c:if test="${infor.imagepaths.size()!=0}">
+          <c:forEach var="i" begin="0" end="${infor.imagepaths.size()-1}">
+                 imgSrc.push("${infor.imagepaths.get(i)}");
 
-                        url: '${pageContext.request.contextPath}/user/update_infor',
-                        data: data,
-                        async:false,
-                        cache: false,
-                        contentType: false,
-                        processData: false,
-                        success: function (data) {
-                            if(data.flag==1){
-                                console.log(data)
-                                alert(data.message);
-                                //修改成功 回退
-                                window.location.href="${pageContext.request.contextPath}/user/infor_num?num=${infor.num}";
-                            }else{
-                                alert(data.message)
-                            }
-                        }
-
-                    }
-                )
-            })
-
-
-
+         </c:forEach>
+         </c:if>
+        for(var i=0;i<imgSrc.length;i++){
+            $("#imgBox").append('<div id="divv'+i+'" class="imgContainer"><img  src="'+imgSrc[i] +'" onclick="imgDisplay(this)"> <p onclick="removeimg('+i+')" class="imgDelete">删除</p></div>')
+        }
 
         }
 
@@ -163,7 +140,7 @@
             $("#btn2").click(function () {
                 $.ajax({
                     url:'${pageContext.request.contextPath}/user/eval',
-                    data:{"num":${infor.num},"fenshu":$('input:radio[name="fenshu"]:checked').val(),"workerid":${infor.workerid}},
+                    data:{"num":${infor.num},"fenshu":$('input:radio[name="fenshu"]:checked').val(),"workerid":${infor.workerid},comment:$("#comment").val()},
                     dataType: 'json',
                     type:'post',
                     async:false,
@@ -186,43 +163,73 @@
 <div align="center">
     <c:choose>
         <c:when test="${infor.state == '待分配'}">
-        <table cellspacing="0" border="0" id="tb1" style="display: block">
+        <table cellspacing="0" border="0" id="tb1" style="display: block" align="center">
             <tr>
-                <td>地点</td>
+                <td>报修人:</td>
+                <td>${infor.userid}</td>
+            </tr>
+            <tr>
+                <td>地点:</td>
                 <td>${infor.place}</td>
             </tr>
             <tr>
-                <td>设备</td>
+                <td>设备:</td>
                 <td>${infor.equip}</td>
             </tr>
             <tr>
-                <td>详细信息</td>
+                <td>详细信息:</td>
                 <td>${infor.detail}</td>
             </tr>
-            <c:if test="${infor.imagepath!=null}">
-            <tr>
-                <td>图片</td>
-                <td><img src="${infor.imagepath}" width="100px" height="120px" alt="诶呀.图片不小心走丢了..."></td>
-            </tr>
-            </c:if>
-            <c:if test="${infor.imagepath==null}">
+
+            <c:if test="${infor.imagepaths.size()==0}">
                 <tr>
-                    <td>图片</td>
-                    <td>该用户没有上传图片...</td>
+                    <td>图片说明:</td>
+                    <td>该用户没有上传图片说明</td>
                 </tr>
+
+            </c:if>
+
+            <c:if test="${infor.imagepaths.size()!=0}">
+                <tr>
+                    <td>图片说明:</td></tr>
+                    <tr><td>
+                <c:if test="${infor.imagepaths.size()<=3}">
+                    <c:forEach var="i" begin="0" end="${infor.imagepaths.size()-1}">
+                        <img src="${infor.imagepaths.get(i)}" alt="图片不小心走丢了。。。" height="150px" width="100px">
+                    </c:forEach>
+                    </td></tr>
+                </c:if>
+                <c:if test="${infor.imagepaths.size()>3}">
+                    <c:forEach  var="i" begin="0" end="2">
+
+                        <img src="${infor.imagepaths.get(i)}" alt="图片不小心走丢了。。。" height="150px" width="100px">
+
+                    </c:forEach>
+                    </td></tr><tr><td>
+                    <c:forEach  var="i" begin="3" end="${infor.imagepaths.size()-1}">
+                        <img src="${infor.imagepaths.get(i)}" alt="图片不小心走丢了。。。" height="150px" width="100px">
+
+                    </c:forEach>
+                    </td></tr>
+
+                </c:if>
+
             </c:if>
             <tr>
-                <td>时间</td>
-                <td>${infor.createdate}</td>
+                <td>时间:</td>
+                <td> <fmt:formatDate type="both"
+                                     dateStyle="long" timeStyle="long"
+                                     value="${infor.createdate}" /></td>
             </tr>
             <tr>
                <td><a href="javascript:void(0)" onclick="delete1()">删除</a></td>
-                <td><a onclick="a1()">修改</a></td>
+                <td><a onclick="a1()" href="javascript:void(0)">修改</a></td>
             </tr>
         </table>
 
 
         <form id="f1" enctype="multipart/form-data" method="post">
+
         <div style="width: 100%;height: 100vh;position: relative;display: none;" align="center" id="div2">
             <div id="upBox">
 
@@ -239,22 +246,12 @@
                     <td>详细信息</td>
                     <td><input type="text" id="detail" value="${infor.detail}"></td>
                 </tr>
-                <c:if test="${infor.imagepath!=null}">
-                    <tr>
-                        <td>图片</td>
-                        <td><img src="${infor.imagepath}" width="100px" height="120px" alt="诶呀.图片不小心走丢了..."></td>
-                    </tr>
-                </c:if>
-                <c:if test="${infor.imagepath==null}">
-                    <tr>
-                        <td>图片</td>
-                        <td>该用户没有上传图片...</td>
-                    </tr>
 
-                </c:if>
                 <tr>
                     <td>时间</td>
-                    <td>${infor.createdate}</td>
+                    <td> <fmt:formatDate type="both"
+                                         dateStyle="long" timeStyle="long"
+                                         value="${infor.createdate}" /></td>
                 </tr>
                 <tr>
                     <div id="inputBox">
@@ -263,31 +260,97 @@
 
                         <input type="file" title="请选择图片" id="file" name="file" multiple accept="image/png,image/jpg,image/gif,image/JPEG"/>点击选择图片</div>
                     <div id="imgBox">
+                    </div>
                 </tr>
                 <tr>
                     <td align="center"><a href="${pageContext.request.contextPath}/user/infor_num?num=${infor.num}">返回</a></td>
                     <td align="center"><a href="javascript:void(0)" id="aa1">确认修改</a></td>
                 </tr>
 
-                </div>
 
+            </table>
             </div>
         </div>
 
-            </table>
+
 </form>
             <script>
                 imgUpload({
                     inputId:'file', //input框id
                     imgBox:'imgBox', //图片容器id
-                    buttonId:'btn', //提交按钮id
-                    upUrl:'user/update_infor',  //提交地址
-                    data:'file1' //参数名
+                    buttonId:'aa1', //提交按钮id
+                    upUrl:'${pageContext.request.contextPath}/user/update_infor',  //提交地址
+                    data:'file' //参数名
                 })
+
+
+                //选择图片
+                function imgUpload(obj) {
+                    var oInput = '#' + obj.inputId;
+                    var imgBox = '#' + obj.imgBox;
+                    var btn = '#' + obj.buttonId;
+                    $(oInput).on("change", function() {
+                        var fileImg = $(oInput)[0];
+                        var fileList = fileImg.files;
+                        for(var i = 0; i < fileList.length; i++) {
+                            var imgSrcI = getObjectURL(fileList[i]);
+                            imgName.push(fileList[i].name);
+                            imgSrc.push(imgSrcI);
+                            console.log(imgSrc)
+                            imgFile.push(fileList[i]);
+                        }
+
+                        addNewContent(imgBox);
+                    })
+                    $(btn).on('click', function() {
+                        var data = new Object;
+                        data[obj.data] = imgFile;
+                        submitPicture(obj.upUrl, data);
+                    })
+
+                }
+
+                function submitPicture(url,data) {
+
+                    var formData = new FormData();
+                    $.each(imgFile, function(i, file) {
+                        formData.append('file', file);
+                    });
+                    formData.append("num",${infor.num});
+                    formData.append("userid",${infor.userid});
+                    formData.append("place",$("#place").val())
+                    formData.append("equip",$("#equip").val())
+                    formData.append(("detail"),$("#detail").val())
+                    console.log(formData)
+                    $.ajax({
+                        type: "post",
+                        url: url,
+                        async: false,
+                        data: formData,
+                        cache: false,
+                        contentType: false,
+                        processData: false,
+                        success: function(message) {
+                            if (message.flag==1){
+                                window.history.go(-1);
+                                alert(message.message);
+                            }else {
+                                alert(message.message);
+                            }
+                        }
+
+                    })
+
+
+                }
             </script>
         </c:when>
         <c:when test="${infor.state == '待维修'}">
             <table cellspacing="0" border="0">
+                <tr>
+                    <td>报修人:</td>
+                    <td>${infor.userid}</td>
+                </tr>
                 <tr>
                     <td>地点</td>
                     <td>${infor.place}</td>
@@ -300,21 +363,45 @@
                     <td>详细信息</td>
                     <td>${infor.detail}</td>
                 </tr>
-                <c:if test="${infor.imagepath!=null}">
+                <c:if test="${infor.imagepaths.size()==0}">
                     <tr>
-                        <td>图片</td>
-                        <td><img src="${infor.imagepath}" width="100px" height="120px" alt="诶呀.图片不小心走丢了..."></td>
+                        <td>图片说明:</td>
+                        <td>该用户没有上传图片说明</td>
                     </tr>
+
                 </c:if>
-                <c:if test="${infor.imagepath==null}">
+
+                <c:if test="${infor.imagepaths.size()!=0}">
                     <tr>
-                        <td>图片</td>
-                        <td>该用户没有上传图片...</td>
-                    </tr>
+                        <td>图片说明:</td></tr>
+                    <tr><td>
+                    <c:if test="${infor.imagepaths.size()<=3}">
+                        <c:forEach var="i" begin="0" end="${infor.imagepaths.size()-1}">
+                            <img src="${infor.imagepaths.get(i)}" alt="图片不小心走丢了。。。" height="150px" width="100px">
+                        </c:forEach>
+                        </td></tr>
+                    </c:if>
+                    <c:if test="${infor.imagepaths.size()>3}">
+                        <c:forEach  var="i" begin="0" end="2">
+
+                            <img src="${infor.imagepaths.get(i)}" alt="图片不小心走丢了。。。" height="150px" width="100px">
+
+                        </c:forEach>
+                        </td></tr><tr><td>
+                        <c:forEach  var="i" begin="3" end="${infor.imagepaths.size()-1}">
+                            <img src="${infor.imagepaths.get(i)}" alt="图片不小心走丢了。。。" height="150px" width="100px">
+
+                        </c:forEach>
+                        </td></tr>
+
+                    </c:if>
+
                 </c:if>
                 <tr>
                     <td>时间</td>
-                    <td>${infor.createdate}</td>
+                    <td> <fmt:formatDate type="both"
+                                         dateStyle="long" timeStyle="long"
+                                         value="${infor.createdate}" /></td>
                 </tr>
                 <tr>
                     <td>维修师傅</td>
@@ -325,6 +412,10 @@
         <c:when test="${infor.state == '正在维修'}">
             <table cellspacing="0" border="0">
                 <tr>
+                    <td>报修人:</td>
+                    <td>${infor.userid}</td>
+                </tr>
+                <tr>
                     <td>地点</td>
                     <td>${infor.place}</td>
                 </tr>
@@ -336,21 +427,45 @@
                     <td>详细信息</td>
                     <td>${infor.detail}</td>
                 </tr>
-                <c:if test="${infor.imagepath!=null}">
+                <c:if test="${infor.imagepaths.size()==0}">
                     <tr>
-                        <td>图片</td>
-                        <td><img src="${infor.imagepath}" width="100px" height="120px" alt="诶呀.图片不小心走丢了..."></td>
+                        <td>图片说明:</td>
+                        <td>该用户没有上传图片说明</td>
                     </tr>
+
                 </c:if>
-                <c:if test="${infor.imagepath==null}">
+
+                <c:if test="${infor.imagepaths.size()!=0}">
                     <tr>
-                        <td>图片</td>
-                        <td>该用户没有上传图片...</td>
-                    </tr>
+                        <td>图片说明:</td></tr>
+                    <tr><td>
+                    <c:if test="${infor.imagepaths.size()<=3}">
+                        <c:forEach var="i" begin="0" end="${infor.imagepaths.size()-1}">
+                            <img src="${infor.imagepaths.get(i)}" alt="图片不小心走丢了。。。" height="150px" width="100px">
+                        </c:forEach>
+                        </td></tr>
+                    </c:if>
+                    <c:if test="${infor.imagepaths.size()>3}">
+                        <c:forEach  var="i" begin="0" end="2">
+
+                            <img src="${infor.imagepaths.get(i)}" alt="图片不小心走丢了。。。" height="150px" width="100px">
+
+                        </c:forEach>
+                        </td></tr><tr><td>
+                        <c:forEach  var="i" begin="3" end="${infor.imagepaths.size()-1}">
+                            <img src="${infor.imagepaths.get(i)}" alt="图片不小心走丢了。。。" height="150px" width="100px">
+
+                        </c:forEach>
+                        </td></tr>
+
+                    </c:if>
+
                 </c:if>
                 <tr>
                     <td>时间</td>
-                    <td>${infor.createdate}</td>
+                    <td> <fmt:formatDate type="both"
+                                         dateStyle="long" timeStyle="long"
+                                         value="${infor.createdate}" /></td>
                 </tr>
                 <tr>
                     <td>维修师傅</td>
@@ -361,6 +476,10 @@
         <c:when test="${infor.state == '已维修'}">
             <table cellspacing="0" border="0">
                 <tr>
+                    <td>报修人:</td>
+                    <td>${infor.userid}</td>
+                </tr>
+                <tr>
                     <td>地点</td>
                     <td>${infor.place}</td>
                 </tr>
@@ -372,25 +491,62 @@
                     <td>详细信息</td>
                     <td>${infor.detail}</td>
                 </tr>
-                <c:if test="${infor.imagepath!=null}">
+                <c:if test="${infor.imagepaths.size()==0}">
                     <tr>
-                        <td>图片</td>
-                        <td><img src="${infor.imagepath}" width="100px" height="120px" alt="诶呀.图片不小心走丢了..."></td>
+                        <td>图片说明:</td>
+                        <td>该用户没有上传图片说明</td>
                     </tr>
+
                 </c:if>
-                <c:if test="${infor.imagepath==null}">
+
+                <c:if test="${infor.imagepaths.size()!=0}">
                     <tr>
-                        <td>图片</td>
-                        <td>该用户没有上传图片...</td>
-                    </tr>
+                        <td>图片说明:</td></tr>
+                    <tr><td>
+                    <c:if test="${infor.imagepaths.size()<=3}">
+                        <c:forEach var="i" begin="0" end="${infor.imagepaths.size()-1}">
+                            <img src="${infor.imagepaths.get(i)}" alt="图片不小心走丢了。。。" height="150px" width="100px">
+                        </c:forEach>
+                        </td></tr>
+                    </c:if>
+                    <c:if test="${infor.imagepaths.size()>3}">
+                        <c:forEach  var="i" begin="0" end="2">
+
+                            <img src="${infor.imagepaths.get(i)}" alt="图片不小心走丢了。。。" height="150px" width="100px">
+
+                        </c:forEach>
+                        </td></tr><tr><td>
+                        <c:forEach  var="i" begin="3" end="${infor.imagepaths.size()-1}">
+                            <img src="${infor.imagepaths.get(i)}" alt="图片不小心走丢了。。。" height="150px" width="100px">
+
+                        </c:forEach>
+                        </td></tr>
+
+                    </c:if>
+
                 </c:if>
                 <tr>
                     <td>时间</td>
-                    <td>${infor.createdate}</td>
+                    <td> <fmt:formatDate type="both"
+                                         dateStyle="long" timeStyle="long"
+                                         value="${infor.createdate}" /></td>
+                </tr>
+
+                <tr>
+                    <td>维修师傅:</td>
+                    <td>${infor.workerid}</td>
                 </tr>
                 <tr>
-                    <td>维修师傅</td>
-                    <td>${infor.workerid}</td>
+                    <td>使用设备编号:</td>
+                    <td>${infor.replay.eid}</td>
+                </tr>
+                <tr>
+                    <td>使用设备数量:</td>
+                    <td>${infor.replay.numbers}</td>
+                </tr>
+                <tr>
+                    <td>师傅留言:</td>
+                    <td>${infor.replay.detail}</td>
                 </tr>
                 <c:if test="${infor.evaluate==0}">
                 <tr>
@@ -406,15 +562,25 @@
                         <input type="radio" id="radio" name="fenshu" value="9">9
                         <input type="radio" id="radio" name="fenshu" value="10">10
                     </td>
+
                 </tr>
                     <tr>
-                        <td colspan="2" align="center"><input type="button" value="确认评价" id="btn2"></td>
+                        <td>评价:</td>
+                        <td><textarea id="comment"></textarea></td>
+                    </tr>
+
+                    <tr>
+                        <td colspan="2" align="center"><input type="button" value="确认完成维修" id="btn2"></td>
                     </tr>
                 </c:if>
                 <c:if test="${infor.evaluate!=0}">
                     <tr>
-                        <td>您对本次服务的打分是:</td>
+                        <td>得分:</td>
                         <td>${infor.evaluate}</td>
+                    </tr>
+                    <tr>
+                        <td>评价:</td>
+                        <td>${infor.comment}</td>
                     </tr>
                 </c:if>
             </table>

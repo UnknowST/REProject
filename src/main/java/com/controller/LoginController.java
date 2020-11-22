@@ -15,6 +15,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 @Controller
 @RequestMapping("/login")
@@ -78,8 +80,11 @@ public class LoginController  {
                 flag="登录成功";
                 message.setFlag(1);
                 Message.num=3;
-                request.getSession().setAttribute("name","admin");
-                request.getSession().setAttribute("password","12345");
+                Map<String,String >map=new HashMap<>();
+                map.put("name","admin");
+                map.put("password","12345");
+                request.getSession().setAttribute("user",map);
+
             }else
             {
                 flag="密码或账号不正确";

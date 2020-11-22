@@ -4,6 +4,7 @@
 		<meta charset="utf-8">
 		<title>登陆系统</title>
 		<!--修改-->
+
 		<script src="Js/jquery-3.3.1.js"></script>
 		<script>
 			$(function () {
@@ -59,12 +60,6 @@
 					<label  style="font-size:25px;font-weight:400;">身份:</label>
 					<input type="radio" name="group" id="group" value="1">普通用户
 					<input type="radio" name="group" id="group" value="2">维修师傅
-				<!--	<select id="group" value="1"  style="background: darkgray;width: 150px;">
-					    <option value=""></option>
-						&lt;!&ndash;此处有修改&ndash;&gt;
-					    <option value="1">普通用户</option>
-						<option value="2">师傅</option>
-					</select>-->
 				</p>
 				
 				<p>
@@ -76,7 +71,7 @@
 				</p>
 
 				<p>
-					<td><label for="code">验证码:</label></td>
+					<td><label for="code" style="font-size:25px;font-weight:400;">验证码:</label></td>
 					<td><input name="check" id="check" type="text" placeholder="请输入验证码" autocomplete="off" style="background: darkgray;"></td></p>
 
 					<p><td align="center" colspan="2"><span><img src="checkCode" width="115px" height="40px" alt="" id="code" onclick="changeCheckCode(this)"></span></td>
@@ -91,5 +86,6 @@
 				&nbsp;&nbsp;&nbsp;&nbsp;<button style="font-size:25px;font-weight:400;background: darkgray;background: darkgray;" onclick="register()">前往注册</button>
 			</div>
 		</div>
+
 	</body>
 </html>

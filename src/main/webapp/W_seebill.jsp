@@ -1,12 +1,6 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: 123
-  Date: 2020/10/25
-  Time: 21:41
-  To change this template use File | Settings | File Templates.
---%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <html>
 <head>
     <title>seebill</title>
@@ -32,7 +26,9 @@
             <td>${bill.useing}</td>
             <td>${bill.cost}</td>
             <td>${bill.workerid}</td>
-            <td>${bill.createdate}</td>
+            <td> <fmt:formatDate type="both"
+                                 dateStyle="long" timeStyle="long"
+                                 value="${bill.createdate}" /></td>
         </tr>
     </c:forEach>
 
